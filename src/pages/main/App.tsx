@@ -1,5 +1,4 @@
-import Navbar from '../../components/navbar/navbar'
-import Footer from '../../components/footer/footer'
+
 
 import '../../global/global.css'
 import TextoDigitado from '../../components/animação/texto_digitado/texto_digitado'
@@ -9,7 +8,6 @@ export default function App() {
   return (
     <>
     <div className="app">
-    <Navbar/>
 
     <main>
 
@@ -19,7 +17,6 @@ export default function App() {
 
     </main>
 
-    <Footer/>
     </div>
     </>
   )
