@@ -94,9 +94,6 @@
 
     background-color: var(--azul-escuro);
     padding: 20px 0;
-    border: 1px solid var(--amarelo-champagne);
-    border-top: 0px;
-    border-bottom: 0px;
 
     box-sizing: border-box;
   }
