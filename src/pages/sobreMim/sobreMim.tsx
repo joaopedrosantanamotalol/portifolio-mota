@@ -9,7 +9,7 @@ export default function SobreMim(){
             <main>
 
             <TextoDigitado
-            texto='Conheça-me melhor'
+            texto='la ele'
             />
 
             </main>
