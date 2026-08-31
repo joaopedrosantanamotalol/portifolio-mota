@@ -14,7 +14,7 @@
 
   color: var(--azul-claro-escuro);
 
-  font-size: clamp(10px, 4vw, 32px);
+  font-size: clamp(15px, 4vw, 32px);
 
   margin-top: 5vh;
 
