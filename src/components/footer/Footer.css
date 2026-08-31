@@ -1,0 +1,23 @@
+.footer {
+  width: 100%;
+  height: 10vh;
+  background-color: black;
+
+  display: flex;
+  align-items: center;      /* vertical */
+  justify-content: center;  /* horizontal */
+}
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.footer-links a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.footer-links a:hover {
+  color: #646cff;
+}

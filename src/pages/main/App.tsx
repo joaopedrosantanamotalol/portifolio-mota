@@ -1,12 +1,20 @@
 import Navbar from '../../components/navbar/navbar'
-import './App.css'
+import Footer from '../../components/footer/footer'
+
+import '../../global/global.css'
+import main from './App.module.css'
 
 export default function App() {
 
   return (
     <>
+    <div className="app">
     <Navbar/>
-    <p className='teste'>Olá! em algum momento adcionarei informações aqui!</p>
+    <main>
+    <p className={main.teste}>Olá! em algum momento adcionarei informações aqui!</p>
+    </main>
+    <Footer/>
+    </div>
     </>
   )
 }
