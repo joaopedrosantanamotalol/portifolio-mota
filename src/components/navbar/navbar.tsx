@@ -19,7 +19,7 @@ export default function Navbar() {
       </button>
 
       <div className={`navbar-links ${menuOpen ? "active" : ""}`}>
-        <a href="">Início</a>
+        <a href="/">Início</a>
         <a href="/sobre-mim">Sobre</a>
         <a href="#projetos">Projetos</a>
         <a href="#contato">Contato</a>
