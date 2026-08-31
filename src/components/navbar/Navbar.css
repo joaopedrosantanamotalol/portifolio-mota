@@ -23,13 +23,37 @@
 }
 
 .navbar-links a {
+  position: relative;
+
   color: white;
   text-decoration: none;
+
   transition: color 0.2s ease;
 }
 
 .navbar-links a:hover {
   color: #646cff;
+}
+
+.navbar-links a::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  bottom: -5px;
+
+  width: 0;
+  height: 2px;
+
+  background-color: #646cff;
+
+  transform: translateX(-50%);
+  transition: width 0.3s ease;
+}
+
+.navbar-links a:hover::after {
+  width: 100%;
 }
 
 /* Botão do menu */
