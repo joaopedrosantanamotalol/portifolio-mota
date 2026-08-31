@@ -1,7 +1,7 @@
 .footer {
   width: 100%;
   height: 10vh;
-  background-color: var(--azul-escuro-claro);
+  background-color: var(--azul-claro-escuro);
 
   display: flex;
   align-items: center;      /* vertical */
@@ -19,5 +19,5 @@
 }
 
 .footer-links a:hover {
-  color: #646cff;
+  color: var(--amarelo-amber);
 }
