@@ -8,7 +8,7 @@
   width: 0;
   color:var(--azul-claro-escuro);
   animation: typing 2.2s steps(32) forwards;
-  font-size: clamp(20px, 4vw, 32px);
+  font-size: clamp(15px, 4vw, 32px);
 }
 
 @keyframes typing {
