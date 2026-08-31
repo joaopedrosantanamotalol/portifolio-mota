@@ -11,13 +11,16 @@ export default function App() {
     <div className="app">
       <Navbar />
 
+    <main>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/sobre-mim" element={<Sobre_mim />} />
       </Routes>
-
+    </main>
+    
     <Footer/>
     </div>
+
     </BrowserRouter>
   )
 }

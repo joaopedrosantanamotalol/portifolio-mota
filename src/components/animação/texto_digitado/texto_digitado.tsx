@@ -1,16 +1,23 @@
-import './text.css'
+import "./text.css";
 
-interface TextoDigitadoProps{
-    texto: string;
+interface TextoDigitadoProps {
+  texto: string;
 }
 
-export default function TextoDigitado({texto}: TextoDigitadoProps){
-    return (
+export default function TextoDigitado({ texto }: TextoDigitadoProps) {
 
-        <div className='titulo_centro'>
-            
-            <h1>{texto}</h1>
-        
-        </div>
-    );
+  const velocidade = 0.08;
+  const duracao = texto.length * velocidade;
+
+  return (
+    <div className="titulo_centro">
+      <h1
+        style={{
+          "--duracao": `${duracao}s`,
+        } as React.CSSProperties}
+      >
+        {texto}
+      </h1>
+    </div>
+  );
 }

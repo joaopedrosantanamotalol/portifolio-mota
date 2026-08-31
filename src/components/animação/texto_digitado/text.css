@@ -12,13 +12,13 @@
   overflow: hidden;
   white-space: nowrap;
 
-  color: var(--azul-claro-escuro);
+    color: var(--amarelo-champagne);
 
   font-size: clamp(15px, 4vw, 32px);
 
   margin-top: 5vh;
 
-  animation: aparecer 2.2s steps(30) forwards;
+  animation: aparecer var(--duracao) steps(30) forwards;
 }
 
 @keyframes aparecer {
