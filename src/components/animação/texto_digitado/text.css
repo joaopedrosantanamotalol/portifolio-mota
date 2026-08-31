@@ -1,0 +1,21 @@
+.titulo_centro{
+  display: flex;
+  justify-content: center;
+}
+.titulo_centro h1 {
+  overflow: hidden;
+  white-space: nowrap;
+  width: 0;
+
+  animation: typing 2.2s steps(32) forwards;
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+
+  to {
+    width: 35ch;
+  }
+}
