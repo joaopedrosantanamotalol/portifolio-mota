@@ -15,6 +15,10 @@ export default function App() {
     texto='Olá, Bem-vindo ao meu web Portifolio'
     />
 
+    <div className="ficheiro-mota">
+      
+    </div>
+
     </main>
 
     </div>
