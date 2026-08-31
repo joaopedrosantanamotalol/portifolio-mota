@@ -72,6 +72,8 @@
   .navbar {
     min-height: 70px;
     padding: 0 20px;
+    position: relative;
+    z-index: 1000;
   }
 
   .navbar-menu {
@@ -96,6 +98,8 @@
     padding: 20px 0;
 
     box-sizing: border-box;
+
+    z-index: 1001;
   }
 
   .navbar-links.active {

@@ -9,8 +9,6 @@ export default function App() {
     <>
     <div className="app">
 
-    <main>
-
     <TextoDigitado
     texto='Olá, Bem-vindo ao meu web Portifolio'
     />
@@ -18,8 +16,6 @@ export default function App() {
     <div className="ficheiro-mota">
       
     </div>
-
-    </main>
 
     </div>
     </>
