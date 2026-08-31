@@ -6,7 +6,7 @@
   justify-content: space-between;
   padding: 0 40px;
   box-sizing: border-box;
-  background-color: #111;
+  background-color: var(--azul-escuro);
   color: white;
   position: relative;
 }
@@ -32,7 +32,7 @@
 }
 
 .navbar-links a:hover {
-  color: #646cff;
+  color: var(--amarelo-amber);
 }
 
 .navbar-links a::after {
@@ -46,7 +46,7 @@
   width: 0;
   height: 2px;
 
-  background-color: #646cff;
+  background-color: var(--amarelo-champagne);
 
   transform: translateX(-50%);
   transition: width 0.3s ease;

@@ -6,7 +6,7 @@
   overflow: hidden;
   white-space: nowrap;
   width: 0;
-
+  color:var(--azul-claro-escuro);
   animation: typing 2.2s steps(32) forwards;
 }
 

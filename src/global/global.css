@@ -3,7 +3,20 @@
   padding: 0;
   box-sizing: border-box;
 }
+:root {
+  /* AZUL */
+  --azul-principal: #131c46;
+  --azul-secundario: #3c4c8f;
+  --azul-marinho: #063254;
+  --azul-escuro: #082338;
+  --azul-claro-escuro: #1d405c;
 
+  /* AMARELO */
+  --amarelo-dourado: #E5B84B;
+  --amarelo-ouro: #F2C94C;
+  --amarelo-amber: #D9A441;
+  --amarelo-champagne: #F4E3A1;
+}
 html,
 body,
 #root {
