@@ -19,5 +19,5 @@
 }
 
 .footer-links a:hover {
-  color: #646cff;
+  color: var(--amarelo-amber);
 }
