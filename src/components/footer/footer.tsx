@@ -14,19 +14,19 @@ export default function footer(){
         <LinhaeImagem
         imagem={Github}
         alt='imagem github'
-        texto='Github'
+        texto='https://github.com/joaopedrosantanamotalol'
         />
 
          <LinhaeImagem
         imagem={Email}
         alt='imagem email'
-        texto='Email'
+        texto='Joaopedromotati@gmail'
         />
 
          <LinhaeImagem
         imagem={linkedin}
         alt='imagem linkedin'
-        texto='linkedin'
+        texto='https://linkedin.com/in/joao-motati'
         />
 
         </div>
