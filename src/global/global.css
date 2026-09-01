@@ -19,22 +19,24 @@
   --amarelo-champagne: #F4E3A1;
 }
 
-html,
-body,
-#root {
+html {
   width: 100%;
   min-height: 100%;
 }
 
 body {
-  background-color: whitesmoke;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
 }
 
 #root {
+  width: 100%;
   min-height: 100vh;
 }
 
 .app {
+  width: 100%;
   min-height: 100vh;
 
   display: flex;
@@ -50,4 +52,5 @@ body {
 
 main {
   flex: 1;
+  width: 100%;
 }
