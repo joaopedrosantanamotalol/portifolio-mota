@@ -7,7 +7,7 @@ export default function FicheiroMota(){
     <>
 
     <div className="titulo">
-      <h1>Sobre mim</h1>
+      <h1>Me conheça</h1>
     </div>
 
     <div className="container">
