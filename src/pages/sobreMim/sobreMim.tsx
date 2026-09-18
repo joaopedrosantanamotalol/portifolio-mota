@@ -62,7 +62,7 @@ export default function SobreMim() {
 
         <section className="sobre-card sobre-card--largo">
           <h2>Fora do código</h2>
-          <p>Sei nadar e amo a minha namorada, a Giovanna.</p>
+          <p>Sei nadar e amo a minha namorada, Giovanna</p>
         </section>
       </div>
     </div>
