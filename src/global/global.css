@@ -42,8 +42,6 @@ body {
   margin: 0;
   min-height: 100vh;
   background-color: var(--bg);
-  background-image: radial-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px);
-  background-size: 26px 26px;
   color: var(--texto);
   font-family: var(--fonte);
   -webkit-font-smoothing: antialiased;
