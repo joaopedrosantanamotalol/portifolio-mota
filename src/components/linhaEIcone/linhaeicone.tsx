@@ -1,18 +1,26 @@
 import './linhaeicone.css'
 
-interface LinhaeImagemProps{
-    imagem?: string;
-    alt: string;
-    texto: string;
+interface LinhaeImagemProps {
+  href: string;
+  texto: string;
+  rotulo?: string;
+  imagem?: string;
+  alt?: string;
 }
 
-export default function LinhaeImagem({imagem,texto,alt}: LinhaeImagemProps){
-return (
+export default function LinhaeImagem({ href, texto, rotulo, imagem, alt = '' }: LinhaeImagemProps) {
+  const externo = href.startsWith('http');
 
-<div className="linhaeimagem">
-<img src={imagem} alt={alt} />
-<a href="">{texto}</a>
-</div>
-
-);
+  return (
+    <a
+      className="linhaeimagem"
+      href={href}
+      target={externo ? '_blank' : undefined}
+      rel={externo ? 'noopener noreferrer' : undefined}
+    >
+      {imagem && <img src={imagem} alt={alt} />}
+      {rotulo && <span className="linhaeimagem-rotulo">{rotulo}</span>}
+      <span className="linhaeimagem-texto">{texto}</span>
+    </a>
+  );
 }

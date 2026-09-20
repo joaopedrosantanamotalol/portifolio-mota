@@ -10,7 +10,7 @@ export default function SobreMim() {
       <TextoDigitado texto="Sobre mim" />
 
       <div className="sobre-grade">
-        <section className="sobre-card sobre-card--largo">
+        <section className="sobre-card">
           <h2>Quem eu sou</h2>
           <p>
             Sou o João Pedro Santana Mota, tenho 18 anos e gosto de programar e
@@ -49,7 +49,7 @@ export default function SobreMim() {
           </div>
         </section>
 
-        <section className="sobre-card sobre-card--largo">
+        <section className="sobre-card">
           <h2>Do que eu gosto</h2>
           <div className="sobre-tags">
             {gostos.map((item) => (
@@ -60,7 +60,7 @@ export default function SobreMim() {
           </div>
         </section>
 
-        <section className="sobre-card sobre-card--largo">
+        <section className="sobre-card sobre-card--linha">
           <h2>Fora do código</h2>
           <p>Sei nadar e amo a minha namorada, Giovanna</p>
         </section>

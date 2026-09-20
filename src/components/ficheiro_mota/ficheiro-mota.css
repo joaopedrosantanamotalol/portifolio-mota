@@ -5,24 +5,23 @@
   align-items: center;
   justify-content: center;
 
-  color: var(--amarelo-champagne);
+  color: var(--texto);
 }
 
 .titulo h1 {
-  font-size: clamp(1.8rem, 4vw, 2.5rem);
-  font-weight: 700;
-  letter-spacing: 0.5px;
-
   position: relative;
 
   padding-bottom: 12px;
+
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
 }
 
 .titulo h1::after {
   content: '';
 
   position: absolute;
-
   bottom: 0;
   left: 50%;
 
@@ -31,194 +30,103 @@
   width: 60px;
   height: 3px;
 
-  background: var(--amarelo-ouro);
-
+  background: var(--acento);
   border-radius: 2px;
+  box-shadow: 0 0 14px var(--acento-brilho);
 }
 
+/* foto e tópicos lado a lado, sem caixa e sem borda */
 .container {
-  width: min(60vw, 1000px);
-  min-height: 35vh;
-
-  margin: 5vh auto;
-
-  padding: 40px 60px;
+  width: min(92%, 900px);
+  margin: 6vh auto;
 
   display: flex;
   flex-direction: row;
-
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
 
-  gap: clamp(40px, 8vw, 160px);
-
-  background: linear-gradient(
-    145deg,
-    var(--azul-marinho),
-    color-mix(
-      in srgb,
-      var(--azul-marinho) 85%,
-      black
-    )
-  );
-
-  border: 1px solid var(--amarelo-champagne);
-
-  border-radius: 16px;
-
-  box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.35),
-    0 0 0 1px rgba(255, 255, 255, 0.02) inset;
+  gap: clamp(28px, 5vw, 64px);
 
   box-sizing: border-box;
-
-  overflow: hidden;
-
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
-}
-
-.container:hover {
-  transform: translateY(-4px);
-
-  box-shadow:
-    0 12px 32px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
 }
 
 .container img {
-  width: clamp(180px, 20vw, 220px);
+  flex: 0 0 auto;
 
-  height: auto;
-
+  width: clamp(200px, 26vw, 280px);
   aspect-ratio: 1 / 1;
-
   object-fit: cover;
 
-  flex: 0 1 auto;
+  border-radius: 20px;
 
-  max-width: 35%;
-
-  border: 3px solid var(--amarelo-ouro);
-
-  border-radius: 12px;
-
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.3);
-
-  transition: transform 0.3s ease;
-}
-
-.container img:hover {
-  transform: scale(1.03) rotate(-1deg);
+  /* brilho azul suave no lugar da borda */
+  box-shadow: 0 0 80px -24px var(--acento-brilho);
 }
 
 .container ul {
-  width: 45%;
-  max-width: 450px;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 480px;
 
   margin: 0;
   padding: 0;
-
   list-style: none;
 
   display: flex;
   flex-direction: column;
-
-  gap: 14px;
-
-  flex: 0 1 45%;
-
-  min-width: 0;
-
-  box-sizing: border-box;
+  gap: 10px;
 }
 
 .container li {
   position: relative;
 
-  width: 100%;
-  min-width: 0;
+  padding: 14px 18px 14px 40px;
 
-  padding: 12px 16px 12px 32px;
+  background-color: var(--superficie-2);
+  border-radius: 12px;
 
-  background-color: rgba(255, 255, 255, 0.08);
-
-  border-left: 3px solid var(--amarelo-ouro);
-
-  border-radius: 6px;
-
-  color: white;
-
+  color: var(--texto);
   font-size: 1rem;
-
   line-height: 1.5;
 
-  box-sizing: border-box;
-
   overflow-wrap: anywhere;
-
-  word-break: break-word;
-
-  box-shadow:
-    0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .container li::before {
-  content: "•";
+  content: '';
 
   position: absolute;
-
-  left: 12px;
+  left: 18px;
   top: 50%;
+
+  width: 8px;
+  height: 8px;
 
   transform: translateY(-50%);
 
-  color: var(--amarelo-ouro);
-
-  font-size: 1.2rem;
+  background: var(--acento);
+  border-radius: 2px;
+  box-shadow: 0 0 10px var(--acento-brilho);
 }
 
-
-/* =========================
-   MOBILE / TABLET
-========================= */
-
-@media (max-width: 910px) {
-
+/* só empilha em telas realmente pequenas */
+@media (max-width: 700px) {
   .container {
-    width: 90%;
-
-    min-height: auto;
-
     flex-direction: column;
-
-    justify-content: center;
-    align-items: center;
-
-    gap: 30px;
-
-    padding: 30px 20px;
+    gap: 28px;
   }
 
   .container img {
     width: clamp(150px, 50vw, 220px);
-
-    max-width: 100%;
   }
 
   .container ul {
-    width: 100%;
-
-    max-width: 500px;
-
     flex: none;
+    width: 100%;
+    max-width: 500px;
   }
 
   .container li {
-    width: 100%;
-
     font-size: 0.95rem;
   }
 }

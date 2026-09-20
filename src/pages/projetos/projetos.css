@@ -4,47 +4,37 @@
   padding-bottom: 8vh;
 }
 
+/* 3 mini cards lado a lado no desktop */
 .projetos-lista {
   margin-top: 5vh;
 
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
 }
 
 .projeto-card {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
 
-  padding: 28px 28px 24px;
+  padding: 20px;
 
-  background: linear-gradient(
-    145deg,
-    var(--azul-marinho),
-    color-mix(in srgb, var(--azul-marinho) 85%, black)
-  );
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
 
-  border: 1px solid var(--amarelo-champagne);
-  border-radius: 16px;
-
-  box-shadow:
-    0 8px 24px rgba(0, 0, 0, 0.35),
-    0 0 0 1px rgba(255, 255, 255, 0.02) inset;
-
-  color: white;
+  color: var(--texto);
 
   transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
-.projeto-card:hover {
-  transform: translateY(-4px);
-
-  box-shadow:
-    0 12px 32px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
+.projeto-card:hover,
+.projeto-card:focus-within {
+  border-color: var(--acento);
+  box-shadow: 0 0 36px -10px var(--acento-brilho);
 }
 
 .projeto-topo {
@@ -56,95 +46,130 @@
 }
 
 .projeto-topo h2 {
-  color: var(--amarelo-champagne);
-  font-size: 1.3rem;
+  margin: 0;
+
+  font-family: var(--mono);
+  font-size: 1rem;
+  font-weight: 600;
   line-height: 1.3;
+  color: var(--texto);
   overflow-wrap: anywhere;
 }
 
 .projeto-status {
-  padding: 4px 12px;
+  padding: 3px 10px;
 
-  border: 1px solid var(--amarelo-ouro);
+  background: var(--acento-fundo);
   border-radius: 999px;
 
-  color: var(--amarelo-ouro);
-  font-size: 0.8rem;
+  color: var(--acento-claro);
+  font-size: 0.75rem;
+  font-weight: 600;
   white-space: nowrap;
 }
 
 .projeto-resumo {
-  line-height: 1.6;
+  margin: 0;
+
+  color: var(--texto-suave);
+  font-size: 0.9rem;
+  line-height: 1.55;
 }
 
 .projeto-destaques {
+  margin: 0;
+  padding: 0;
   list-style: none;
 
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .projeto-destaques li {
-  padding: 10px 14px;
+  position: relative;
+  padding-left: 16px;
 
-  background-color: rgba(255, 255, 255, 0.08);
-
-  border-left: 3px solid var(--amarelo-ouro);
-  border-radius: 6px;
-
-  font-size: 0.95rem;
-  line-height: 1.5;
+  font-size: 0.85rem;
+  line-height: 1.45;
   overflow-wrap: anywhere;
+}
+
+.projeto-destaques li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.5em;
+
+  width: 6px;
+  height: 6px;
+
+  background: var(--acento);
+  border-radius: 2px;
+}
+
+/* tags à esquerda, botão à direita */
+.projeto-rodape {
+  margin-top: auto;
+  padding-top: 14px;
+
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 12px;
+
+  border-top: 1px solid var(--borda);
 }
 
 .projeto-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 6px;
 }
 
 .projeto-tag {
-  padding: 4px 12px;
+  padding: 3px 10px;
 
-  background: rgba(242, 201, 76, 0.08);
+  border: 1px solid var(--borda-forte);
+  border-radius: 6px;
 
-  border: 1px solid var(--amarelo-ouro);
-  border-radius: 999px;
-
-  color: var(--amarelo-champagne);
-  font-size: 0.85rem;
+  color: var(--texto-suave);
+  font-size: 0.75rem;
 }
 
 .projeto-link {
-  margin-top: auto;
-  align-self: flex-start;
+  padding: 8px 14px;
 
-  padding: 10px 18px;
-
-  background-color: var(--amarelo-ouro);
+  background-color: var(--acento-forte);
   border-radius: 8px;
 
-  color: var(--azul-escuro);
-  font-weight: 700;
+  color: #fff;
+  font-size: 0.85rem;
+  font-weight: 600;
   text-decoration: none;
+  white-space: nowrap;
 
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
 .projeto-link:hover {
-  background-color: var(--amarelo-amber);
-  transform: translateY(-2px);
+  background-color: var(--acento);
 }
 
-@media (max-width: 768px) {
+/* tablet: 2 colunas, e o terceiro card ocupa a linha toda (horizontal) */
+@media (max-width: 1000px) {
   .projetos-lista {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .projeto-card {
-    padding: 22px 20px;
+  .projeto-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 640px) {
+  .projetos-lista {
+    grid-template-columns: 1fr;
   }
 }

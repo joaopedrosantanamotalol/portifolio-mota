@@ -1,62 +1,76 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap');
 
 :root {
-  /* AZUL */
-  --azul-principal: #131c46;
-  --azul-secundario: #3c4c8f;
-  --azul-marinho: #063254;
-  --azul-escuro: #082338;
-  --azul-claro-escuro: #1d405c;
+  /* base */
+  --bg: #000000;
+  --superficie: #0a0a0f;
+  --superficie-2: #11131a;
+  --borda: #1c2130;
+  --borda-forte: #2a3042;
 
-  /* AMARELO */
-  --amarelo-dourado: #E5B84B;
-  --amarelo-ouro: #F2C94C;
-  --amarelo-amber: #D9A441;
-  --amarelo-champagne: #F4E3A1;
+  /* texto */
+  --texto: #f5f7fb;
+  --texto-suave: #98a1b5;
+
+  /* azul de destaque */
+  --acento: #3b82f6;
+  --acento-forte: #2563eb;
+  --acento-claro: #7db4ff;
+  --acento-fundo: rgba(59, 130, 246, 0.12);
+  --acento-brilho: rgba(59, 130, 246, 0.35);
+
+  /* fontes */
+  --fonte: 'Plus Jakarta Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Consolas, monospace;
+
+  /* nomes antigos apontando para a paleta nova,
+     assim componentes que eu não vi (Ficheiro, TextoDigitado...) também mudam */
+  --azul-escuro: var(--bg);
+  --azul-claro-escuro: var(--superficie-2);
+  --azul-marinho: var(--superficie);
+  --amarelo-champagne: var(--texto);
+  --amarelo-ouro: var(--acento);
+  --amarelo-amber: var(--acento-claro);
 }
 
-html,
-body,
-#root {
-  width: 100%;
-  min-height: 100%;
+html {
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+body {
   margin: 0;
-  padding: 0;
+  background-color: var(--bg);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+  background-size: 26px 26px;
+  color: var(--texto);
+  font-family: var(--fonte);
+  -webkit-font-smoothing: antialiased;
 }
 
-html,
-body {
-  overflow-x: hidden;
+button {
+  font-family: inherit;
 }
 
-body {
-  min-height: 100vh;
+::selection {
+  background: var(--acento);
+  color: #fff;
 }
 
-#root {
-  min-height: 100vh;
+:focus-visible {
+  outline: 2px solid var(--acento-claro);
+  outline-offset: 3px;
 }
 
-.app {
-  width: 100%;
-  min-height: 100vh;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 
-  display: flex;
-  flex-direction: column;
-
-  background: radial-gradient(
-    circle at top,
-    color-mix(in srgb, var(--azul-marinho) 92%, white) 0%,
-    var(--azul-marinho) 45%,
-    color-mix(in srgb, var(--azul-marinho) 80%, black) 100%
-  );
-}
-
-main {
-  flex: 1;
-  width: 100%;
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }

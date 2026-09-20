@@ -1,32 +1,32 @@
-.titulo_centro {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  padding: 0 20px;
+/* Título das páginas (o arquivo que tem .titulo h1) */
+.titulo h1 {
+  color: var(--texto);
+  font-family: var(--fonte);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  cursor: default;
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
 }
 
-.titulo_centro h1 {
-  width: fit-content;
-  max-width: 100%;
-
-  overflow: hidden;
-  white-space: nowrap;
-
-    color: var(--amarelo-champagne);
-
-  font-size: clamp(15px, 4vw, 32px);
-
-  margin-top: 5vh;
-
-  animation: aparecer var(--duracao) steps(30) forwards;
+.titulo h1:hover {
+  transform: translateY(-2px);
+  text-shadow: 0 0 28px var(--acento-brilho);
 }
 
-@keyframes aparecer {
-  from {
-    clip-path: inset(0 100% 0 0);
-  }
+.titulo h1::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 3px;
+  background: var(--acento);
+  border-radius: 2px;
+  box-shadow: 0 0 14px var(--acento-brilho);
+  transition: width 0.3s ease;
+}
 
-  to {
-    clip-path: inset(0 0 0 0);
-  }
+.titulo h1:hover::after {
+  width: 100px;
 }

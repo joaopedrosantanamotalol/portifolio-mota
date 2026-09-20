@@ -25,17 +25,24 @@ export default function Projetos() {
               ))}
             </ul>
 
-            <div className="projeto-tags">
-              {projeto.tecnologias.map((tecnologia) => (
-                <span className="projeto-tag" key={tecnologia}>
-                  {tecnologia}
-                </span>
-              ))}
-            </div>
+            <footer className="projeto-rodape">
+              <div className="projeto-tags">
+                {projeto.tecnologias.map((tecnologia) => (
+                  <span className="projeto-tag" key={tecnologia}>
+                    {tecnologia}
+                  </span>
+                ))}
+              </div>
 
-            <a className="projeto-link" href={projeto.link} target="_blank" rel="noopener noreferrer">
-              Ver no GitHub →
-            </a>
+              <a
+                className="projeto-link"
+                href={projeto.link}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Ver no GitHub →
+              </a>
+            </footer>
           </article>
         ))}
       </div>

@@ -1,36 +1,28 @@
 import LinhaeImagem from '../linhaEIcone/linhaeicone';
 import './Footer.css'
 
-import Github from '@/assets/icones/github-light.svg'
-import Email from '@/assets/icones/gmail.svg'
-import linkedin from '@/assets/icones/linkedin.svg'
-
-export default function footer(){
-    return(
-
-        <footer className="footer">
-        <div className="footer-links">
+export default function Footer() {
+  return (
+    <footer className="footer">
+      <div className="footer-links">
+        <LinhaeImagem
+          rotulo="GitHub"
+          texto="joaopedrosantanamotalol"
+          href="https://github.com/joaopedrosantanamotalol"
+        />
 
         <LinhaeImagem
-        imagem={Github}
-        alt='imagem github'
-        texto='https://github.com/joaopedrosantanamotalol'
+          rotulo="Email"
+          texto="Joaopedromotati@gmail.com"
+          href="mailto:Joaopedromotati@gmail.com"
         />
 
-         <LinhaeImagem
-        imagem={Email}
-        alt='imagem email'
-        texto='Joaopedromotati@gmail'
+        <LinhaeImagem
+          rotulo="LinkedIn"
+          texto="joao-motati"
+          href="https://linkedin.com/in/joao-motati"
         />
-
-         <LinhaeImagem
-        imagem={linkedin}
-        alt='imagem linkedin'
-        texto='https://linkedin.com/in/joao-motati'
-        />
-
-        </div>
-        </footer>
-
-    );
+      </div>
+    </footer>
+  );
 }
