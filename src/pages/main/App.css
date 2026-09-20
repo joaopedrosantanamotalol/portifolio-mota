@@ -27,3 +27,8 @@
   border-radius: 2px;
   transition: width 0.3s ease, background 0.3s ease;
 }
+.home{
+  display: flex;
+  align-items: center;
+  align-content: center;
+}

@@ -30,3 +30,14 @@
 .titulo h1:hover::after {
   width: 100px;
 }
+
+/* Tela principal: conteúdo empilhado e centralizado */
+.home {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+}
