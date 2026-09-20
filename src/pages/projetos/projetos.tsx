@@ -10,22 +10,16 @@ export default function Projetos() {
       <div className="projetos-lista">
         {projetos.map((projeto) => (
           <article className="projeto-card" key={projeto.id}>
-            <header className="projeto-topo">
-              <h2>{projeto.nome}</h2>
-              {projeto.status && (
-                <span className="projeto-status">{projeto.status}</span>
-              )}
-            </header>
+            <div className="projeto-info">
+              <header className="projeto-topo">
+                <h2>{projeto.nome}</h2>
+                {projeto.status && (
+                  <span className="projeto-status">{projeto.status}</span>
+                )}
+              </header>
 
-            <p className="projeto-resumo">{projeto.resumo}</p>
+              <p className="projeto-resumo">{projeto.resumo}</p>
 
-            <ul className="projeto-destaques">
-              {projeto.destaques.map((destaque) => (
-                <li key={destaque}>{destaque}</li>
-              ))}
-            </ul>
-
-            <footer className="projeto-rodape">
               <div className="projeto-tags">
                 {projeto.tecnologias.map((tecnologia) => (
                   <span className="projeto-tag" key={tecnologia}>
@@ -33,6 +27,14 @@ export default function Projetos() {
                   </span>
                 ))}
               </div>
+            </div>
+
+            <div className="projeto-lateral">
+              <ul className="projeto-destaques">
+                {projeto.destaques.map((destaque) => (
+                  <li key={destaque}>{destaque}</li>
+                ))}
+              </ul>
 
               <a
                 className="projeto-link"
@@ -42,7 +44,7 @@ export default function Projetos() {
               >
                 Ver no GitHub →
               </a>
-            </footer>
+            </div>
           </article>
         ))}
       </div>
