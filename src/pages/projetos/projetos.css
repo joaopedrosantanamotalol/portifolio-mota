@@ -165,6 +165,54 @@
   background-color: var(--acento);
 }
 
+/* ===== projeto concluído ===== */
+
+.projeto-card--concluido {
+  position: relative;
+
+  border-color: rgba(74, 222, 128, 0.25);
+}
+
+.projeto-card--concluido::before {
+  content: '';
+
+  position: absolute;
+  top: -1px;
+  left: 16px;
+  right: 16px;
+
+  height: 2px;
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #4ade80,
+    transparent
+  );
+
+  border-radius: 2px;
+}
+
+.projeto-card--concluido:hover,
+.projeto-card--concluido:focus-within {
+  border-color: #4ade80;
+  box-shadow: 0 0 36px -10px rgba(74, 222, 128, 0.35);
+}
+
+.projeto-status--concluido {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  background: rgba(74, 222, 128, 0.12);
+  color: #4ade80;
+}
+
+.projeto-status-check {
+  font-size: 0.8em;
+  line-height: 1;
+}
+
 /* celular: as duas colunas empilham dentro do card */
 @media (max-width: 760px) {
   .projeto-card {

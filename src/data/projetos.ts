@@ -10,6 +10,20 @@ export interface Projeto {
 
 export const projetos: Projeto[] = [
   {
+    id: 'python-assistive-software',
+    nome: 'Merlin',
+    status: 'Concluído',
+    resumo:
+      'Projeto em Python para auxiliar portadores de deficiências motoras a utilizarem seus aparelhos notebooks por comandos faciais',
+    destaques: [
+      'Utilização de OpenCV e mediaPipe para Captação do rosto',
+      'Acessibilidade expandida para o próximo nível',
+      'Interface gráfica simples e objetiva resumida em uma doc',
+    ],
+    tecnologias: ['Python', 'OpenCv', 'MediaPipe', 'CustomTkinter', 'Sqlite'],
+    link: 'https://github.com/RgoSL/M.E.R.LIN',
+  },
+  {
     id: 'java-micro-service',
     nome: 'Java Micro Service',
     status: 'Em desenvolvimento',

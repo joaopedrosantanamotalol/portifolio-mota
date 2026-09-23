@@ -8,45 +8,57 @@ export default function Projetos() {
       <TextoDigitado texto="Meus projetos" />
 
       <div className="projetos-lista">
-        {projetos.map((projeto) => (
-          <article className="projeto-card" key={projeto.id}>
-            <div className="projeto-info">
-              <header className="projeto-topo">
-                <h2>{projeto.nome}</h2>
-                {projeto.status && (
-                  <span className="projeto-status">{projeto.status}</span>
-                )}
-              </header>
+        {projetos.map((projeto) => {
+          const concluido = projeto.status === 'Concluído'
 
-              <p className="projeto-resumo">{projeto.resumo}</p>
+          return (
+            <article
+              className={`projeto-card${concluido ? ' projeto-card--concluido' : ''}`}
+              key={projeto.id}
+            >
+              <div className="projeto-info">
+                <header className="projeto-topo">
+                  <h2>{projeto.nome}</h2>
+                  {projeto.status && (
+                    <span
+                      className={`projeto-status${concluido ? ' projeto-status--concluido' : ''}`}
+                    >
+                      {concluido && <span className="projeto-status-check">✓</span>}
+                      {projeto.status}
+                    </span>
+                  )}
+                </header>
 
-              <div className="projeto-tags">
-                {projeto.tecnologias.map((tecnologia) => (
-                  <span className="projeto-tag" key={tecnologia}>
-                    {tecnologia}
-                  </span>
-                ))}
+                <p className="projeto-resumo">{projeto.resumo}</p>
+
+                <div className="projeto-tags">
+                  {projeto.tecnologias.map((tecnologia) => (
+                    <span className="projeto-tag" key={tecnologia}>
+                      {tecnologia}
+                    </span>
+                  ))}
+                </div>
               </div>
-            </div>
 
-            <div className="projeto-lateral">
-              <ul className="projeto-destaques">
-                {projeto.destaques.map((destaque) => (
-                  <li key={destaque}>{destaque}</li>
-                ))}
-              </ul>
+              <div className="projeto-lateral">
+                <ul className="projeto-destaques">
+                  {projeto.destaques.map((destaque) => (
+                    <li key={destaque}>{destaque}</li>
+                  ))}
+                </ul>
 
-              <a
-                className="projeto-link"
-                href={projeto.link}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                Ver no GitHub →
-              </a>
-            </div>
-          </article>
-        ))}
+                <a
+                  className="projeto-link"
+                  href={projeto.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Ver no GitHub →
+                </a>
+              </div>
+            </article>
+          )
+        })}
       </div>
     </div>
   )
