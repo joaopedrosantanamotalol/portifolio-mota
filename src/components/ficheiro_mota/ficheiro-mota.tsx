@@ -1,5 +1,5 @@
 
-import ImagemEu from '@/assets/mota.jpeg'
+import ImagemEu from '@/assets/novoMota.jpeg'
 import './ficheiro-mota.css'
 
 export default function FicheiroMota(){
