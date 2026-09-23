@@ -59,15 +59,15 @@ body::before {
   background-image:
     repeating-linear-gradient(
       0deg,
-      rgba(59, 130, 246, 0.18) 0,
-      rgba(59, 130, 246, 0.18) 1px,
+      rgba(59, 130, 246, 0.12) 0,
+      rgba(59, 130, 246, 0.12) 1px,
       transparent 1px,
       transparent 68px
     ),
     repeating-linear-gradient(
       90deg,
-      rgba(59, 130, 246, 0.18) 0,
-      rgba(59, 130, 246, 0.18) 1px,
+      rgba(59, 130, 246, 0.12) 0,
+      rgba(59, 130, 246, 0.12) 1px,
       transparent 1px,
       transparent 68px
     );
@@ -77,6 +77,17 @@ body::before {
 
   pointer-events: none;
   z-index: -1;
+
+  animation: girar-fundo 240s linear infinite;
+}
+
+@keyframes girar-fundo {
+  from {
+    transform: rotate(-9deg);
+  }
+  to {
+    transform: rotate(351deg);
+  }
 }
 
 /* ===== footer sempre colado no fundo da tela ===== */
