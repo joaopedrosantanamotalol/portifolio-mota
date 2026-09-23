@@ -12,6 +12,7 @@ export const projetos: Projeto[] = [
   {
     id: 'java-micro-service',
     nome: 'Java Micro Service',
+    status: 'Em desenvolvimento',
     resumo:
       'Microsserviço em Java com Spring Boot. A branch produto reúne o serviço do domínio de produtos, com persistência em banco relacional e camada de segurança.',
     destaques: [
@@ -56,6 +57,7 @@ export const projetos: Projeto[] = [
   {
     id: 'python-audio-task-manager',
     nome: 'Python Audio Task Manager',
+    status: 'Em desenvolvimento',
     resumo:
       'Projeto em Python para gerenciar tarefas por áudio, com transcrição de fala feita localmente e interface de linha de comando.',
     destaques: [

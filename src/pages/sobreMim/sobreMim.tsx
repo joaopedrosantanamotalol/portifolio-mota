@@ -1,7 +1,7 @@
 import TextoDigitado from '../../components/animação/texto_digitado/texto_digitado'
 import './sobreMim.css'
 
-const gostos = ['Backend', 'Java', 'Spring Boot', 'Arquitetura', 'DevOps', 'Docker']
+const gostos = ['Backend', 'Java', 'Spring Boot', 'Arquitetura', 'DevOps', 'Docker', 'Python']
 const experiencia = ['SQL', 'LSP', 'Integração', 'Análise de dados']
 
 export default function SobreMim() {
@@ -24,11 +24,11 @@ export default function SobreMim() {
           <ul className="sobre-lista">
             <li>
               <strong>Análise e Desenvolvimento de Sistemas</strong>
-              <span>Fatec Zona Leste · cursando</span>
+              <span>Fatec Zona Leste · cursando (2026)</span>
             </li>
             <li>
               <strong>Ensino médio técnico em Desenvolvimento de Sistemas</strong>
-              <span>Concluído</span>
+              <span>Etec Zona Leste Concluído (2023 - 2025)</span>
             </li>
           </ul>
         </section>
