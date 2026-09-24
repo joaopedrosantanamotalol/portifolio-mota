@@ -7,6 +7,8 @@ import Navbar from './components/navbar/navbar'
 import Footer from './components/footer/footer.tsx'
 import Trajetoria from './pages/trajetoria/trajetoria.tsx';
 import Contato from './pages/contato/Contato.tsx';
+import Extra from './pages/extra/extra.tsx';
+
 export default function App() {
 return (
 <BrowserRouter>
@@ -19,7 +21,8 @@ return (
 <Route path="/sobre-mim" element={<Sobre_mim />} />
 <Route path="/projetos" element={<Projetos />} />
 <Route path="/trajetoria" element={<Trajetoria />} />
-  <Route path="/contato" element={<Contato />} />
+<Route path="/contato" element={<Contato />} />
+<Route path="/extra" element={<Extra />} />
 </Routes>
 </main>
 <Footer/>
