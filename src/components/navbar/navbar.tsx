@@ -28,7 +28,7 @@ export default function Navbar() {
         <NavLink to="/sobre-mim" className={classeLink} onClick={fecharMenu}>Sobre</NavLink>
         <NavLink to="/projetos" className={classeLink} onClick={fecharMenu}>Projetos</NavLink>
         <NavLink to="/trajetoria" className={classeLink} onClick={fecharMenu}>Trajetória</NavLink>
-        <a href="#contato" onClick={fecharMenu}>Contato</a>
+        <NavLink to="/contato" className={classeLink} onClick={fecharMenu}>Contato</NavLink>
       </div>
     </nav>
   );
