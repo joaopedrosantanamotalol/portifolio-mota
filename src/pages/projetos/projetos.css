@@ -15,6 +15,8 @@
 
 /* card em duas colunas: info à esquerda, destaques e botão à direita */
 .projeto-card {
+  position: relative;
+
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
 
@@ -24,15 +26,65 @@
 
   color: var(--texto);
 
+  /* estado inicial: some um pouco abaixo, pronto pra "subir" quando entrar na tela */
+  opacity: 0;
+  transform: translateY(28px);
+
   transition:
+    opacity 0.6s ease,
+    transform 0.6s ease,
     border-color 0.25s ease,
     box-shadow 0.25s ease;
 }
 
+.projeto-card--visivel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .projeto-card:hover,
 .projeto-card:focus-within {
+  transform: translateY(-4px);
+
   border-color: var(--acento);
-  box-shadow: 0 0 36px -10px var(--acento-brilho);
+  box-shadow: 0 16px 40px -14px var(--acento-brilho);
+}
+
+/* contorno animado que "passeia" pela borda no hover */
+.projeto-card::after {
+  content: '';
+
+  position: absolute;
+  inset: -1px;
+  z-index: -1;
+
+  border-radius: inherit;
+
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    var(--acento) 10%,
+    transparent 24%
+  );
+
+  opacity: 0;
+
+  animation: projeto-girar 3.5s linear infinite;
+  animation-play-state: paused;
+
+  transition: opacity 0.3s ease;
+}
+
+.projeto-card:hover::after,
+.projeto-card:focus-within::after {
+  opacity: 1;
+  animation-play-state: running;
+}
+
+@keyframes projeto-girar {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* coluna da esquerda */
@@ -42,6 +94,9 @@
   gap: 12px;
 
   padding: 22px 26px;
+
+  background: var(--superficie);
+  border-radius: 12px 0 0 12px;
 }
 
 .projeto-topo {
@@ -63,6 +118,10 @@
 }
 
 .projeto-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
   padding: 3px 10px;
 
   background: var(--acento-fundo);
@@ -72,6 +131,35 @@
   font-size: 0.75rem;
   font-weight: 600;
   white-space: nowrap;
+}
+
+.projeto-status-check {
+  font-size: 0.8em;
+  line-height: 1;
+}
+
+/* bolinha pulsando pros projetos em andamento */
+.projeto-status-dot {
+  width: 6px;
+  height: 6px;
+  flex-shrink: 0;
+
+  background: var(--acento-claro);
+  border-radius: 50%;
+
+  animation: projeto-pulsar 1.6s ease-in-out infinite;
+}
+
+@keyframes projeto-pulsar {
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 var(--acento-brilho);
+  }
+  50% {
+    opacity: 0.5;
+    box-shadow: 0 0 0 4px transparent;
+  }
 }
 
 .projeto-resumo {
@@ -98,6 +186,20 @@
 
   color: var(--texto-suave);
   font-size: 0.75rem;
+
+  transition:
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.projeto-card:hover .projeto-tag {
+  border-color: var(--acento);
+  color: var(--acento-claro);
+}
+
+.projeto-tag:hover {
+  transform: translateY(-2px);
 }
 
 /* coluna da direita */
@@ -109,7 +211,9 @@
 
   padding: 22px 26px;
 
+  background: var(--superficie);
   border-left: 1px solid var(--borda);
+  border-radius: 0 12px 12px 0;
 }
 
 .projeto-destaques {
@@ -142,10 +246,21 @@
 
   background: var(--acento);
   border-radius: 2px;
+
+  transition: transform 0.2s ease;
+}
+
+.projeto-destaques li:hover::before {
+  transform: scale(1.4);
 }
 
 .projeto-link {
   align-self: flex-end;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  overflow: hidden;
 
   padding: 8px 14px;
 
@@ -158,18 +273,28 @@
   text-decoration: none;
   white-space: nowrap;
 
-  transition: background-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .projeto-link:hover {
   background-color: var(--acento);
+  transform: translateX(2px);
+}
+
+.projeto-link-seta {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.projeto-link:hover .projeto-link-seta {
+  transform: translateX(4px);
 }
 
 /* ===== projeto concluído ===== */
 
 .projeto-card--concluido {
-  position: relative;
-
   border-color: rgba(74, 222, 128, 0.25);
 }
 
@@ -183,12 +308,7 @@
 
   height: 2px;
 
-  background: linear-gradient(
-    90deg,
-    transparent,
-    #4ade80,
-    transparent
-  );
+  background: linear-gradient(90deg, transparent, #4ade80, transparent);
 
   border-radius: 2px;
 }
@@ -196,27 +316,45 @@
 .projeto-card--concluido:hover,
 .projeto-card--concluido:focus-within {
   border-color: #4ade80;
-  box-shadow: 0 0 36px -10px rgba(74, 222, 128, 0.35);
+  box-shadow: 0 16px 40px -14px rgba(74, 222, 128, 0.35);
+}
+
+.projeto-card--concluido::after {
+  background: conic-gradient(
+    from 0deg,
+    transparent 0%,
+    #4ade80 10%,
+    transparent 24%
+  );
 }
 
 .projeto-status--concluido {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-
   background: rgba(74, 222, 128, 0.12);
   color: #4ade80;
 }
 
-.projeto-status-check {
-  font-size: 0.8em;
-  line-height: 1;
+/* respeita quem prefere menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  .projeto-card {
+    opacity: 1;
+    transform: none;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .projeto-card::after,
+  .projeto-status-dot {
+    animation: none;
+  }
 }
 
 /* celular: as duas colunas empilham dentro do card */
 @media (max-width: 760px) {
   .projeto-card {
     grid-template-columns: 1fr;
+  }
+
+  .projeto-info {
+    border-radius: 12px 12px 0 0;
   }
 
   .projeto-info,
@@ -227,6 +365,7 @@
   .projeto-lateral {
     border-left: none;
     border-top: 1px solid var(--borda);
+    border-radius: 0 0 12px 12px;
   }
 
   .projeto-link {
