@@ -16,6 +16,7 @@
 /* card em duas colunas: info à esquerda, destaques e botão à direita */
 .projeto-card {
   position: relative;
+  overflow: hidden; /* garante que o brilho nunca escape do card arredondado */
 
   display: grid;
   grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
@@ -50,41 +51,30 @@
   box-shadow: 0 16px 40px -14px var(--acento-brilho);
 }
 
-/* contorno animado que "passeia" pela borda no hover */
+/* brilho diagonal que desliza pelo card no hover, sempre contido dentro dele */
 .projeto-card::after {
   content: '';
 
   position: absolute;
-  inset: -1px;
-  z-index: -1;
+  inset: 0;
+  z-index: 1;
 
-  border-radius: inherit;
-
-  background: conic-gradient(
-    from 0deg,
-    transparent 0%,
-    var(--acento) 10%,
-    transparent 24%
+  background: linear-gradient(
+    100deg,
+    transparent 42%,
+    var(--acento-brilho) 50%,
+    transparent 58%
   );
 
-  opacity: 0;
+  transform: translateX(-130%);
+  pointer-events: none;
 
-  animation: projeto-girar 3.5s linear infinite;
-  animation-play-state: paused;
-
-  transition: opacity 0.3s ease;
+  transition: transform 0.8s ease;
 }
 
 .projeto-card:hover::after,
 .projeto-card:focus-within::after {
-  opacity: 1;
-  animation-play-state: running;
-}
-
-@keyframes projeto-girar {
-  to {
-    transform: rotate(360deg);
-  }
+  transform: translateX(130%);
 }
 
 /* coluna da esquerda */
@@ -302,9 +292,10 @@
   content: '';
 
   position: absolute;
-  top: -1px;
+  top: 0;
   left: 16px;
   right: 16px;
+  z-index: 2;
 
   height: 2px;
 
@@ -317,15 +308,6 @@
 .projeto-card--concluido:focus-within {
   border-color: #4ade80;
   box-shadow: 0 16px 40px -14px rgba(74, 222, 128, 0.35);
-}
-
-.projeto-card--concluido::after {
-  background: conic-gradient(
-    from 0deg,
-    transparent 0%,
-    #4ade80 10%,
-    transparent 24%
-  );
 }
 
 .projeto-status--concluido {
