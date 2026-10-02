@@ -84,6 +84,7 @@ export default function SobreMim() {
               <strong>Synergie Consulting</strong>
             </li>
           </ul>
+          <p>Manutenção de Sistemas ERP e HCM da Sênior Sistemas, uso extensivo de SQL.</p>
           <div className="sobre-tags">
             {experiencia.map((item) => (
               <span className="sobre-tag" key={item}>
