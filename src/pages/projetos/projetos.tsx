@@ -3,10 +3,12 @@ import TextoDigitado from '../../components/animação/texto_digitado/texto_digi
 import { projetos } from '../../data/projetos'
 import './projetos.css'
 
+// o layout se repete a cada 4 projetos: 1 grande, 1 largo, 2 pequenos
+const VARIANTES = ['grande', 'largo', 'pequeno', 'pequeno'] as const
+
 export default function Projetos() {
   const cartoesRef = useRef<(HTMLElement | null)[]>([])
 
-  // revela cada card com uma animação suave conforme ele entra na tela
   useEffect(() => {
     const cartoes = cartoesRef.current.filter((el): el is HTMLElement => el !== null)
 
@@ -24,7 +26,7 @@ export default function Projetos() {
           }
         })
       },
-      { threshold: 0.18 },
+      { threshold: 0.15 },
     )
 
     cartoes.forEach((el) => observer.observe(el))
@@ -35,52 +37,53 @@ export default function Projetos() {
     <div className="projetos">
       <TextoDigitado texto="Meus projetos" />
 
-      <div className="projetos-lista">
+      <div className="projetos-bento">
         {projetos.map((projeto, indice) => {
           const concluido = projeto.status === 'Concluído'
+          const variante = VARIANTES[indice % VARIANTES.length]
 
           return (
             <article
-              className={`projeto-card${concluido ? ' projeto-card--concluido' : ''}`}
+              className={`projeto-card projeto-card--${variante}${
+                concluido ? ' projeto-card--concluido' : ''
+              }`}
               key={projeto.id}
               ref={(el) => {
                 cartoesRef.current[indice] = el
               }}
               style={{ transitionDelay: `${(indice % 4) * 0.08}s` }}
+              tabIndex={0}
             >
-              <div className="projeto-info">
-                <header className="projeto-topo">
-                  <h2>{projeto.nome}</h2>
-                  {projeto.status && (
-                    <span
-                      className={`projeto-status${concluido ? ' projeto-status--concluido' : ' projeto-status--andamento'}`}
-                    >
-                      {concluido ? (
-                        <span className="projeto-status-check">✓</span>
-                      ) : (
-                        <span className="projeto-status-dot" />
-                      )}
-                      {projeto.status}
-                    </span>
-                  )}
-                </header>
+              <header className="projeto-topo">
+                <h2>{projeto.nome}</h2>
+                {projeto.status && (
+                  <span
+                    className={`projeto-status${
+                      concluido ? ' projeto-status--concluido' : ' projeto-status--andamento'
+                    }`}
+                  >
+                    {concluido ? (
+                      <span className="projeto-status-check">✓</span>
+                    ) : (
+                      <span className="projeto-status-dot" />
+                    )}
+                    {projeto.status}
+                  </span>
+                )}
+              </header>
 
-                <p className="projeto-resumo">{projeto.resumo}</p>
+              <p className="projeto-resumo">{projeto.resumo}</p>
 
-                <div className="projeto-tags">
-                  {projeto.tecnologias.map((tecnologia, i) => (
-                    <span
-                      className="projeto-tag"
-                      key={tecnologia}
-                      style={{ transitionDelay: `${(indice % 4) * 0.08 + i * 0.04}s` }}
-                    >
-                      {tecnologia}
-                    </span>
-                  ))}
-                </div>
+              <div className="projeto-tags">
+                {projeto.tecnologias.map((tecnologia) => (
+                  <span className="projeto-tag" key={tecnologia}>
+                    {tecnologia}
+                  </span>
+                ))}
               </div>
 
-              <div className="projeto-lateral">
+              {/* no card grande fica sempre visível; nos outros, revela ao passar o mouse */}
+              <div className="projeto-revelar">
                 <ul className="projeto-destaques">
                   {projeto.destaques.map((destaque) => (
                     <li key={destaque}>{destaque}</li>
@@ -97,6 +100,12 @@ export default function Projetos() {
                   <span className="projeto-link-seta">→</span>
                 </a>
               </div>
+
+              {variante !== 'grande' && (
+                <span className="projeto-dica" aria-hidden="true">
+                  passe o mouse ou toque →
+                </span>
+              )}
             </article>
           )
         })}

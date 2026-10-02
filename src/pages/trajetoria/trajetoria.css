@@ -1,47 +1,132 @@
 .trajetoria {
-  width: min(92%, 1200px);
+  width: min(92%, 760px);
   margin: 0 auto;
   padding-bottom: 8vh;
 }
 
-/* linha do tempo horizontal, com um traço azul conectando os cards */
-.trajetoria-linha {
+/* ===== a árvore: um tronco vertical central, com os marcos alternando de lado ===== */
+.arvore {
   position: relative;
 
   margin-top: 6vh;
 
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
 }
 
-.trajetoria-linha::before {
+/* o tronco principal, atrás de tudo */
+.arvore::before {
   content: '';
 
   position: absolute;
-  top: 22px;
-  left: 0;
-  right: 0;
+  top: 0;
+  bottom: 0;
+  left: 50%;
 
-  height: 2px;
+  width: 2px;
 
   background: linear-gradient(
-    90deg,
+    to bottom,
     transparent,
-    var(--borda-forte) 8%,
-    var(--borda-forte) 92%,
+    var(--borda-forte) 4%,
+    var(--borda-forte) 96%,
     transparent
   );
+
+  transform: translateX(-50%);
 }
 
-.marco-card {
+.marco {
   position: relative;
 
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: 1fr 40px 1fr;
+  align-items: start;
 
-  padding: 40px 18px 20px;
+  opacity: 0;
+  transform: translateY(24px);
+
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.marco--visivel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* o "galho": ponto no tronco + linha curta até o card */
+.marco-linha {
+  position: relative;
+
+  grid-column: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+}
+
+.marco-ponto {
+  position: relative;
+  z-index: 2;
+
+  width: 14px;
+  height: 14px;
+
+  background: var(--bg);
+  border: 2px solid var(--acento);
+  border-radius: 50%;
+
+  box-shadow: 0 0 0 0 var(--acento-brilho);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+/* traço curto do ponto até a borda do card, do lado certo */
+.marco-linha::after {
+  content: '';
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+
+  width: 20px;
+  height: 2px;
+
+  background: var(--acento);
+  opacity: 0.5;
+
+  transform: translateY(-50%);
+}
+
+.marco:nth-child(even) .marco-linha::after {
+  left: auto;
+  right: 50%;
+}
+
+.marco--visivel .marco-ponto {
+  animation: marco-pulsar 2.4s ease-in-out infinite;
+}
+
+@keyframes marco-pulsar {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 var(--acento-brilho);
+  }
+  50% {
+    box-shadow: 0 0 0 6px transparent;
+  }
+}
+
+/* o card fica à direita nos marcos ímpares e à esquerda nos pares */
+.marco-card {
+  position: relative;
+  overflow: hidden;
+
+  grid-column: 3;
+
+  padding: 18px 20px;
 
   background: var(--superficie);
   border: 1px solid var(--borda);
@@ -49,35 +134,52 @@
 
   color: var(--texto);
 
-  transition:
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
 }
 
+.marco:nth-child(even) .marco-card {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.marco:nth-child(even) .marco-linha {
+  grid-column: 2;
+}
+
+/* traço curto ligando o ponto ao card, some/aparece conforme o lado */
 .marco-card:hover,
 .marco-card:focus-within {
+  transform: translateY(-3px);
+
   border-color: var(--acento);
-  box-shadow: 0 0 36px -10px var(--acento-brilho);
+  box-shadow: 0 16px 36px -16px var(--acento-brilho);
 }
 
-/* bolinha na linha do tempo */
-.marco-card::before {
+/* brilho diagonal que desliza pelo card no hover */
+.marco-card::after {
   content: '';
 
   position: absolute;
-  top: 16px;
-  left: 18px;
+  inset: 0;
+  z-index: 1;
 
-  width: 12px;
-  height: 12px;
+  background: linear-gradient(100deg, transparent 42%, var(--acento-brilho) 50%, transparent 58%);
 
-  background: var(--acento);
-  border: 3px solid var(--bg);
-  border-radius: 50%;
-  box-shadow: 0 0 14px var(--acento-brilho);
+  transform: translateX(-130%);
+  pointer-events: none;
+
+  transition: transform 0.8s ease;
+}
+
+.marco-card:hover::after,
+.marco-card:focus-within::after {
+  transform: translateX(130%);
 }
 
 .marco-ano {
+  position: relative;
+  z-index: 2;
+
   font-family: var(--mono);
   font-size: 0.85rem;
   font-weight: 600;
@@ -85,7 +187,10 @@
 }
 
 .marco-card h2 {
-  margin: 0;
+  position: relative;
+  z-index: 2;
+
+  margin: 4px 0 8px;
 
   font-size: 1.05rem;
   font-weight: 700;
@@ -93,6 +198,9 @@
 }
 
 .marco-card p {
+  position: relative;
+  z-index: 2;
+
   margin: 0;
 
   color: var(--texto-suave);
@@ -101,9 +209,11 @@
 }
 
 .marco-link {
-  margin-top: auto;
-  align-self: flex-start;
+  position: relative;
+  z-index: 2;
 
+  display: inline-flex;
+  margin-top: 12px;
   padding: 7px 12px;
 
   background-color: var(--acento-forte);
@@ -122,38 +232,48 @@
   background-color: var(--acento);
 }
 
-/* tablet: 2 colunas — a linha do tempo vira 2 traços separados */
-@media (max-width: 900px) {
-  .trajetoria-linha {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+@media (prefers-reduced-motion: reduce) {
+  .marco {
+    opacity: 1;
+    transform: none;
   }
 
-  .trajetoria-linha::before {
-    top: 0;
-    bottom: 0;
-    left: 22px;
-    right: auto;
-
-    width: 2px;
-    height: auto;
-
-    background: linear-gradient(
-      180deg,
-      transparent,
-      var(--borda-forte) 8%,
-      var(--borda-forte) 92%,
-      transparent
-    );
+  .marco-ponto {
+    animation: none;
   }
 }
 
-/* celular: uma coluna, linha do tempo vertical */
+/* celular: tronco vai pra esquerda, todos os cards do mesmo lado */
 @media (max-width: 560px) {
-  .trajetoria-linha {
-    grid-template-columns: 1fr;
+  .arvore::before {
+    left: 7px;
   }
 
-  .trajetoria-linha::before {
-    left: 22px;
+  .marco {
+    grid-template-columns: 20px 1fr;
+    gap: 0 14px;
+  }
+
+  .marco-linha {
+    grid-column: 1;
+    justify-content: flex-start;
+  }
+
+  .marco-card,
+  .marco:nth-child(even) .marco-card {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .marco:nth-child(even) .marco-linha {
+    grid-column: 1;
+  }
+
+  /* no celular todo mundo fica do mesmo lado, então o traço sempre aponta pra direita */
+  .marco-linha::after,
+  .marco:nth-child(even) .marco-linha::after {
+    left: 50%;
+    right: auto;
+    width: 14px;
   }
 }

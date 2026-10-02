@@ -1,33 +1,35 @@
 .projetos {
-  width: min(92%, 1100px);
+  width: min(94%, 1200px);
   margin: 0 auto;
   padding-bottom: 8vh;
 }
 
-/* um card por linha, cada um bem largo e baixo */
-.projetos-lista {
+/* grade "bento": tamanhos variados, não é mais uma fileira repetitiva */
+.projetos-bento {
   margin-top: 5vh;
 
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-auto-rows: 168px;
   gap: 14px;
 }
 
-/* card em duas colunas: info à esquerda, destaques e botão à direita */
 .projeto-card {
   position: relative;
-  overflow: hidden; /* garante que o brilho nunca escape do card arredondado */
+  overflow: hidden;
 
-  display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 22px;
 
   background: var(--superficie);
   border: 1px solid var(--borda);
-  border-radius: 12px;
+  border-radius: 14px;
 
   color: var(--texto);
 
-  /* estado inicial: some um pouco abaixo, pronto pra "subir" quando entrar na tela */
   opacity: 0;
   transform: translateY(28px);
 
@@ -44,14 +46,32 @@
 }
 
 .projeto-card:hover,
-.projeto-card:focus-within {
+.projeto-card:focus-within,
+.projeto-card:focus-visible {
   transform: translateY(-4px);
 
   border-color: var(--acento);
   box-shadow: 0 16px 40px -14px var(--acento-brilho);
+  outline: none;
 }
 
-/* brilho diagonal que desliza pelo card no hover, sempre contido dentro dele */
+/* tamanhos do bento */
+.projeto-card--grande {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.projeto-card--largo {
+  grid-column: span 2;
+  grid-row: span 1;
+}
+
+.projeto-card--pequeno {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+/* brilho diagonal que desliza pelo card no hover, contido dentro dele */
 .projeto-card::after {
   content: '';
 
@@ -59,12 +79,7 @@
   inset: 0;
   z-index: 1;
 
-  background: linear-gradient(
-    100deg,
-    transparent 42%,
-    var(--acento-brilho) 50%,
-    transparent 58%
-  );
+  background: linear-gradient(100deg, transparent 42%, var(--acento-brilho) 50%, transparent 58%);
 
   transform: translateX(-130%);
   pointer-events: none;
@@ -75,18 +90,6 @@
 .projeto-card:hover::after,
 .projeto-card:focus-within::after {
   transform: translateX(130%);
-}
-
-/* coluna da esquerda */
-.projeto-info {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  padding: 22px 26px;
-
-  background: var(--superficie);
-  border-radius: 12px 0 0 12px;
 }
 
 .projeto-topo {
@@ -105,6 +108,10 @@
   line-height: 1.3;
   color: var(--texto);
   overflow-wrap: anywhere;
+}
+
+.projeto-card--grande .projeto-topo h2 {
+  font-size: 1.3rem;
 }
 
 .projeto-status {
@@ -128,7 +135,6 @@
   line-height: 1;
 }
 
-/* bolinha pulsando pros projetos em andamento */
 .projeto-status-dot {
   width: 6px;
   height: 6px;
@@ -156,13 +162,28 @@
   margin: 0;
 
   color: var(--texto-suave);
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   line-height: 1.55;
+
+  /* nos cards menores, trunca em 2 linhas pra não estourar o quadrado */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.projeto-card--grande .projeto-resumo {
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+}
+
+.projeto-card--pequeno .projeto-resumo {
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
 }
 
 .projeto-tags {
-  margin-top: auto;
-
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
@@ -175,12 +196,9 @@
   border-radius: 6px;
 
   color: var(--texto-suave);
-  font-size: 0.75rem;
+  font-size: 0.72rem;
 
-  transition:
-    border-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
+  transition: border-color 0.2s ease, color 0.2s ease;
 }
 
 .projeto-card:hover .projeto-tag {
@@ -188,22 +206,47 @@
   color: var(--acento-claro);
 }
 
-.projeto-tag:hover {
-  transform: translateY(-2px);
-}
+/* ===== painel que revela destaques + link ===== */
 
-/* coluna da direita */
-.projeto-lateral {
+.projeto-card--grande .projeto-revelar {
   display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: space-between;
-  gap: 18px;
+  gap: 14px;
+}
 
-  padding: 22px 26px;
+.projeto-card--largo .projeto-revelar,
+.projeto-card--pequeno .projeto-revelar {
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 2;
 
-  background: var(--superficie);
-  border-left: 1px solid var(--borda);
-  border-radius: 0 12px 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 16px;
+
+  background: linear-gradient(
+    to top,
+    var(--superficie) 55%,
+    rgba(10, 10, 15, 0.92) 85%,
+    transparent
+  );
+
+  transform: translateY(100%);
+  opacity: 0;
+
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.projeto-card--largo:hover .projeto-revelar,
+.projeto-card--largo:focus-within .projeto-revelar,
+.projeto-card--pequeno:hover .projeto-revelar,
+.projeto-card--pequeno:focus-within .projeto-revelar {
+  transform: translateY(0);
+  opacity: 1;
 }
 
 .projeto-destaques {
@@ -213,15 +256,19 @@
 
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
+}
+
+.projeto-card--pequeno .projeto-destaques li:nth-child(n + 3) {
+  display: none;
 }
 
 .projeto-destaques li {
   position: relative;
-  padding-left: 16px;
+  padding-left: 14px;
 
-  font-size: 0.85rem;
-  line-height: 1.45;
+  font-size: 0.8rem;
+  line-height: 1.4;
   overflow-wrap: anywhere;
 }
 
@@ -229,48 +276,38 @@
   content: '';
   position: absolute;
   left: 0;
-  top: 0.5em;
+  top: 0.45em;
 
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 
   background: var(--acento);
   border-radius: 2px;
-
-  transition: transform 0.2s ease;
-}
-
-.projeto-destaques li:hover::before {
-  transform: scale(1.4);
 }
 
 .projeto-link {
-  align-self: flex-end;
+  align-self: flex-start;
 
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  overflow: hidden;
 
-  padding: 8px 14px;
+  padding: 7px 12px;
 
   background-color: var(--acento-forte);
   border-radius: 8px;
 
   color: #fff;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
 
-  transition:
-    background-color 0.2s ease,
-    transform 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .projeto-link:hover {
   background-color: var(--acento);
-  transform: translateX(2px);
 }
 
 .projeto-link-seta {
@@ -280,6 +317,26 @@
 
 .projeto-link:hover .projeto-link-seta {
   transform: translateX(4px);
+}
+
+/* dica discreta pros cards que escondem conteúdo */
+.projeto-dica {
+  position: absolute;
+  right: 16px;
+  bottom: 14px;
+  z-index: 1;
+
+  color: var(--texto-suave);
+  font-size: 0.68rem;
+  font-style: italic;
+
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+}
+
+.projeto-card:hover .projeto-dica,
+.projeto-card:focus-within .projeto-dica {
+  opacity: 0;
 }
 
 /* ===== projeto concluído ===== */
@@ -300,7 +357,6 @@
   height: 2px;
 
   background: linear-gradient(90deg, transparent, #4ade80, transparent);
-
   border-radius: 2px;
 }
 
@@ -315,7 +371,6 @@
   color: #4ade80;
 }
 
-/* respeita quem prefere menos movimento */
 @media (prefers-reduced-motion: reduce) {
   .projeto-card {
     opacity: 1;
@@ -329,28 +384,54 @@
   }
 }
 
-/* celular: as duas colunas empilham dentro do card */
-@media (max-width: 760px) {
-  .projeto-card {
+/* tablet: bento vira 2 colunas, mantendo variação de tamanho */
+@media (max-width: 900px) {
+  .projetos-bento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .projeto-card--grande,
+  .projeto-card--largo {
+    grid-column: span 2;
+  }
+
+  .projeto-card--pequeno {
+    grid-column: span 1;
+  }
+}
+
+/* celular: tudo em 1 coluna, conteúdo sempre visível (sem depender de hover) */
+@media (max-width: 620px) {
+  .projetos-bento {
     grid-template-columns: 1fr;
+    grid-auto-rows: auto;
   }
 
-  .projeto-info {
-    border-radius: 12px 12px 0 0;
+  .projeto-card {
+    grid-column: span 1 !important;
+    grid-row: span 1 !important;
   }
 
-  .projeto-info,
-  .projeto-lateral {
-    padding: 20px;
+  .projeto-resumo {
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
   }
 
-  .projeto-lateral {
-    border-left: none;
-    border-top: 1px solid var(--borda);
-    border-radius: 0 0 12px 12px;
+  .projeto-card--largo .projeto-revelar,
+  .projeto-card--pequeno .projeto-revelar {
+    position: static;
+    transform: none;
+    opacity: 1;
+
+    padding: 0;
+    background: none;
   }
 
-  .projeto-link {
-    align-self: flex-start;
+  .projeto-card--pequeno .projeto-destaques li:nth-child(n + 3) {
+    display: list-item;
+  }
+
+  .projeto-dica {
+    display: none;
   }
 }
