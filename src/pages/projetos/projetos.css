@@ -1,28 +1,28 @@
 .projetos {
-  width: min(94%, 1200px);
+  width: min(97%, 1500px);
   margin: 0 auto;
   padding-bottom: 8vh;
 }
 
 .projetos-grade {
   margin-top: 5vh;
-
   display: grid;
-  grid-template-columns: 1fr; /* 1 projeto por linha, usando a largura toda */
-  gap: 20px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 70px;
 }
 
 .projeto-card {
   position: relative;
-  overflow: hidden; /* mantém a imagem e o brilho do hover sempre dentro do card */
-
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+
+  width: 100%;
+  min-width: 0;
 
   background: var(--superficie);
   border: 1px solid var(--borda);
   border-radius: 14px;
-
   color: var(--texto);
 
   opacity: 0;
@@ -289,6 +289,47 @@
   border-color: rgba(74, 222, 128, 0.3);
 }
 
+.projeto-detalhes {
+  margin-top: 8px;
+}
+
+.projeto-detalhes h3 {
+  margin: 0 0 16px;
+  color: var(--texto);
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.projeto-destaques {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.projeto-destaques li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+
+  background: var(--superficie-2);
+  border: 1px solid var(--borda);
+  border-radius: 9px;
+
+  color: var(--texto-suave);
+  font-size: 0.88rem;
+  line-height: 1.65;
+
+  overflow-wrap: anywhere;
+}
+
+.projeto-destaque-icone {
+  flex-shrink: 0;
+  color: var(--acento-claro);
+  font-weight: 700;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .projeto-card {
     opacity: 1;
@@ -303,27 +344,40 @@
 
 /* telas largas: continua empilhado (foto, título, texto, botão), só que bem mais largo */
 @media (min-width: 760px) {
-  /* a essa largura, 16:9 ficaria alto demais — achata um pouco a faixa da foto */
   .projeto-capa {
     aspect-ratio: 32 / 9;
   }
 
   .projeto-corpo {
-    padding: 24px 32px 28px;
+    padding: 28px 40px 32px;
+    gap: 16px;
   }
 
   .projeto-corpo h2 {
-    font-size: 1.25rem;
+    font-size: 1.4rem;
   }
 
   .projeto-resumo {
-    max-width: 760px;
-    font-size: 0.92rem;
+    max-width: 1100px;
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .projeto-destaques {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px 24px;
   }
 }
 
-@media (max-width: 480px) {
-  .projetos-grade {
+@media (max-width: 759px) {
+  .projeto-destaques {
+    display: grid;
     grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .projeto-corpo {
+    padding: 18px;
   }
 }

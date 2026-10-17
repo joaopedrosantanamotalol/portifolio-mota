@@ -124,6 +124,21 @@ export default function Projetos() {
 
                 <p className="projeto-resumo">{projeto.resumo}</p>
 
+                {projeto.destaques.length > 0 && (
+                <div className="projeto-detalhes">
+                  <h3>Principais funcionalidades e decisões técnicas</h3>
+
+                  <ul className="projeto-destaques">
+                    {projeto.destaques.map((destaque) => (
+                      <li key={destaque}>
+                        <span className="projeto-destaque-icone">↗</span>
+                        <span>{destaque}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
                 <div className="projeto-rodape">
                   <a
                     className="projeto-link"
