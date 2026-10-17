@@ -17,7 +17,7 @@ export default function FicheiroMota(){
             <li>Me chamo João Mota</li>
             <li>Sou estudante de Análise e Desenvolvimento de Sistemas na FATEC - ZL</li>
             <li>Desenvolvedor Full Stack, Spring & React</li>
-            <li>Tenho interesse em desenvolvimento web e backend</li>
+            <li>Tenho interesse em desenvolvimento web completo! FullStack Tanto o Front quanto o Back!</li>
         </ul>
     </div>
 
