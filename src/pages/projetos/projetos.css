@@ -1,110 +1,237 @@
+/* Projetos: lista editorial com "janela de navegador" para a capa + animações.
+   Usa as mesmas variáveis do seu tema (--superficie, --acento, etc). */
+
 .projetos {
-  width: min(94%, 1200px);
+  width: min(94%, 1100px);
   margin: 0 auto;
-  padding-bottom: 8vh;
+  padding-bottom: 10vh;
 }
 
-.projetos-grade {
-  margin-top: 5vh;
-
-  display: grid;
-  grid-template-columns: 1fr; /* 1 projeto por linha, usando a largura toda */
-  gap: 20px;
-}
-
-.projeto-card {
-  position: relative;
-  overflow: hidden; /* mantém a imagem e o brilho do hover sempre dentro do card */
+.projetos-lista {
+  margin-top: 6vh;
 
   display: flex;
   flex-direction: column;
+  border-bottom: 1px solid var(--borda);
+}
+
+/* ===== linha de projeto ===== */
+
+.projeto {
+  position: relative; /* âncora do link que cobre a linha toda */
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 24px;
+
+  padding: 40px 0;
+  border-top: 1px solid var(--borda);
+
+  --dx: 0px;
+  --dy: 48px;
+}
+
+/* traço de luz que corre pelo filete quando a linha aparece */
+.projeto::before {
+  content: '';
+
+  position: absolute;
+  top: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+
+  background: linear-gradient(90deg, transparent, var(--acento), var(--acento-claro));
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.projeto--visivel::before {
+  animation: projeto-traco 1.4s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+@keyframes projeto-traco {
+  0% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  65% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
+  }
+}
+
+/* ===== entrada em sequência =====
+   Tudo começa escondido; quando a linha entra na tela cada pedaço
+   aparece em ordem (--i), a janela vem de lado e a imagem é "revelada". */
+
+.projeto-anim {
+  opacity: 0;
+}
+
+.projeto--visivel .projeto-anim {
+  animation: projeto-entrar 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 90ms + 120ms);
+}
+
+@keyframes projeto-entrar {
+  from {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(0.97);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: blur(0);
+  }
+}
+
+.projeto--visivel .projeto-capa img {
+  animation: projeto-revelar 1.2s cubic-bezier(0.65, 0, 0.35, 1) 0.35s backwards;
+}
+
+@keyframes projeto-revelar {
+  from {
+    clip-path: inset(0 0 100% 0);
+    transform: scale(1.25);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+    transform: scale(1);
+  }
+}
+
+.projeto--visivel .projeto-tag {
+  animation: projeto-pop 0.5s cubic-bezier(0.3, 1.5, 0.5, 1) backwards;
+  animation-delay: calc(var(--t, 0) * 70ms + 650ms);
+}
+
+@keyframes projeto-pop {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ===== capa dentro de uma janela ===== */
+
+.projeto-palco {
+  perspective: 1000px;
+}
+
+.projeto-janela {
+  position: relative;
+  overflow: hidden;
 
   background: var(--superficie);
-  border: 1px solid var(--borda);
-  border-radius: 14px;
+  border: 1px solid var(--borda-forte);
+  border-radius: 10px;
 
-  color: var(--texto);
-
-  opacity: 0;
-  transform: translateY(28px);
-
+  /* inclinação 3D que segue o mouse (valores setados no TSX) */
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
   transition:
-    opacity 0.6s ease,
-    transform 0.6s ease,
-    border-color 0.25s ease,
-    box-shadow 0.25s ease;
+    transform 0.25s ease-out,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
+  will-change: transform;
 }
 
-.projeto-card--visivel {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.projeto-card:hover,
-.projeto-card:focus-within {
-  transform: translateY(-5px);
-
-  border-color: var(--acento);
-  box-shadow: 0 18px 44px -16px var(--acento-brilho);
-}
-
-/* brilho diagonal que desliza pelo card no hover */
-.projeto-card::after {
+/* luz que acompanha o cursor por cima da capa */
+.projeto-janela::before {
   content: '';
 
   position: absolute;
   inset: 0;
-  z-index: 2;
+  z-index: 3;
 
-  background: linear-gradient(100deg, transparent 42%, var(--acento-brilho) 50%, transparent 58%);
-
-  transform: translateX(-130%);
+  background: radial-gradient(
+    380px circle at var(--mx, 50%) var(--my, 50%),
+    var(--acento-brilho),
+    transparent 60%
+  );
+  opacity: 0;
   pointer-events: none;
 
-  transition: transform 0.8s ease;
+  transition: opacity 0.3s ease;
 }
 
-.projeto-card:hover::after,
-.projeto-card:focus-within::after {
-  transform: translateX(130%);
+.projeto-janela:hover::before {
+  opacity: 1;
 }
 
-/* ===== capa (imagem do repositório) ===== */
+.projeto-barra {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  height: 34px;
+  padding: 0 12px;
+
+  background: var(--superficie-2);
+  border-bottom: 1px solid var(--borda);
+}
+
+.projeto-barra-ponto {
+  width: 9px;
+  height: 9px;
+  flex-shrink: 0;
+
+  background: var(--borda-forte);
+  border-radius: 50%;
+
+  transition: background-color 0.3s ease;
+}
+
+/* os três pontinhos ganham cor no hover */
+.projeto:hover .projeto-barra-ponto:nth-child(1) {
+  background: #ff5f57;
+}
+.projeto:hover .projeto-barra-ponto:nth-child(2) {
+  background: #febc2e;
+}
+.projeto:hover .projeto-barra-ponto:nth-child(3) {
+  background: #28c840;
+}
+
+.projeto-barra-caminho {
+  min-width: 0;
+  margin-left: 8px;
+
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  color: var(--texto-suave);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 .projeto-capa {
   position: relative;
 
-  width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 1200 / 630;
+  overflow: hidden;
 
   background: linear-gradient(135deg, var(--superficie-2), var(--superficie));
-
-  overflow: hidden;
 }
 
 .projeto-capa img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 
-  transition: transform 0.5s ease;
-}
-
-.projeto-card:hover .projeto-capa img {
-  transform: scale(1.08);
-}
-
-/* sombra sutil embaixo da imagem, pra ela se misturar com o corpo do card */
-.projeto-capa::before {
-  content: '';
-
-  position: absolute;
-  inset: auto 0 0 0;
-  z-index: 1;
-
-  height: 50%;
-
-  background: linear-gradient(to top, var(--superficie), transparent);
+  transition: transform 0.6s ease;
 }
 
 /* quando a imagem do GitHub falha (repo não existe, sem preview, etc.) */
@@ -117,213 +244,267 @@
   justify-content: center;
 
   font-family: var(--mono);
-  font-size: 2.6rem;
+  font-size: clamp(3rem, 10vw, 5rem);
   font-weight: 700;
   color: var(--acento-claro);
-  opacity: 0.5;
+  opacity: 0.45;
+}
+
+.projeto:hover .projeto-janela,
+.projeto:focus-within .projeto-janela {
+  border-color: var(--acento);
+  box-shadow: 0 28px 70px -26px var(--acento-brilho);
+}
+
+.projeto:hover .projeto-capa img {
+  transform: scale(1.05);
+}
+
+/* ===== texto ===== */
+
+.projeto-corpo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
 }
 
 .projeto-status {
-  position: absolute;
-  top: 12px;
-  left: 12px;
-  z-index: 2;
-
   display: inline-flex;
   align-items: center;
-  gap: 5px;
-
-  padding: 4px 11px;
-
-  background: rgba(10, 10, 15, 0.75);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
-  border: 1px solid var(--acento-fundo);
-  border-radius: 999px;
+  gap: 8px;
 
   color: var(--acento-claro);
-  font-size: 0.75rem;
+  font-size: 0.82rem;
   font-weight: 600;
-  white-space: nowrap;
 }
 
-.projeto-status-check {
-  font-size: 0.8em;
-  line-height: 1;
+.projeto-status--concluido {
+  color: #4ade80;
 }
 
 .projeto-status-dot {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
   flex-shrink: 0;
 
-  background: var(--acento-claro);
+  background: currentColor;
   border-radius: 50%;
 
-  animation: projeto-pulsar 1.6s ease-in-out infinite;
+  animation: projeto-pulsar 1.8s ease-in-out infinite;
+}
+
+.projeto-status-check {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+}
+
+/* o check se desenha sozinho quando a linha aparece */
+.projeto-status-check path {
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+}
+
+.projeto--visivel .projeto-status-check path {
+  animation: projeto-desenhar 0.6s ease-out 0.9s forwards;
+}
+
+@keyframes projeto-desenhar {
+  to {
+    stroke-dashoffset: 0;
+  }
 }
 
 @keyframes projeto-pulsar {
   0%,
   100% {
-    opacity: 1;
     box-shadow: 0 0 0 0 var(--acento-brilho);
   }
   50% {
-    opacity: 0.5;
-    box-shadow: 0 0 0 4px transparent;
+    box-shadow: 0 0 0 5px transparent;
   }
-}
-
-/* ===== corpo do card ===== */
-
-.projeto-corpo {
-  position: relative;
-  z-index: 1;
-
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  gap: 10px;
-
-  padding: 18px 20px 20px;
 }
 
 .projeto-corpo h2 {
   margin: 0;
 
   font-family: var(--mono);
-  font-size: 1.05rem;
+  font-size: clamp(1.5rem, 3.2vw, 2.1rem);
   font-weight: 600;
-  line-height: 1.3;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
   color: var(--texto);
   overflow-wrap: anywhere;
+
+  /* sublinhado do acento que cresce no hover */
+  background: linear-gradient(var(--acento), var(--acento)) 0 100% / 0% 2px no-repeat;
+  transition: background-size 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.projeto:hover .projeto-corpo h2 {
+  background-size: 100% 2px;
+}
+
+.projeto-resumo {
+  margin: 0;
+  max-width: 52ch;
+
+  color: var(--texto-suave);
+  font-size: 1rem;
+  line-height: 1.65;
 }
 
 .projeto-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
 .projeto-tag {
-  padding: 3px 10px;
+  padding: 4px 10px;
 
-  border: 1px solid var(--borda-forte);
+  background: var(--superficie-2);
   border-radius: 6px;
 
   color: var(--texto-suave);
-  font-size: 0.72rem;
+  font-size: 0.78rem;
 
-  transition: border-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
 }
 
-.projeto-card:hover .projeto-tag {
-  border-color: var(--acento);
+.projeto:hover .projeto-tag {
+  background: var(--acento-fundo);
   color: var(--acento-claro);
 }
 
-.projeto-resumo {
-  flex: 1;
-  margin: 0;
-
-  color: var(--texto-suave);
-  font-size: 0.88rem;
-  line-height: 1.55;
-}
-
-/* botão sempre no canto inferior direito do card */
-.projeto-rodape {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 6px;
+.projeto-tag:hover {
+  transform: translateY(-2px);
 }
 
 .projeto-link {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 10px;
 
-  padding: 8px 14px;
+  margin-top: 4px;
+  padding: 11px 18px;
 
   background-color: var(--acento-forte);
   border-radius: 8px;
 
   color: #fff;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
 
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition: background-color 0.2s ease, box-shadow 0.3s ease;
 }
 
-.projeto-link:hover {
+/* faz a linha inteira ser clicável, não só o botão */
+.projeto-link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.projeto:hover .projeto-link {
   background-color: var(--acento);
-  transform: translateX(2px);
+  box-shadow: 0 10px 28px -8px var(--acento-brilho);
+}
+
+.projeto-link:focus-visible {
+  outline: none;
+}
+
+.projeto-link:focus-visible::after {
+  outline: 2px solid var(--acento-claro);
+  outline-offset: -2px;
+  border-radius: 6px;
 }
 
 .projeto-link-seta {
-  display: inline-block;
-  transition: transform 0.2s ease;
+  width: 16px;
+  height: 16px;
+
+  transition: transform 0.25s ease;
 }
 
-.projeto-link:hover .projeto-link-seta {
-  transform: translateX(4px);
+.projeto:hover .projeto-link-seta {
+  transform: translateX(5px);
 }
 
-/* ===== projeto concluído ===== */
+/* ===== telas largas: capa de um lado, texto do outro, alternando ===== */
 
-.projeto-card--concluido {
-  border-color: rgba(74, 222, 128, 0.25);
-}
+@media (min-width: 900px) {
+  .projeto {
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    align-items: center;
+    gap: 64px;
 
-.projeto-card--concluido:hover,
-.projeto-card--concluido:focus-within {
-  border-color: #4ade80;
-  box-shadow: 0 18px 44px -16px rgba(74, 222, 128, 0.35);
-}
+    padding: 64px 0;
 
-.projeto-status--concluido {
-  color: #4ade80;
-  border-color: rgba(74, 222, 128, 0.3);
+    /* a janela entra de lado: da esquerda nas ímpares, da direita nas pares */
+    --dx: -70px;
+    --dy: 0px;
+  }
+
+  .projeto:nth-child(even) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    --dx: 70px;
+  }
+
+  .projeto:nth-child(even) .projeto-palco {
+    order: 2;
+  }
+
+  /* o texto sempre sobe, independente do lado */
+  .projeto-corpo .projeto-anim {
+    --dx: 0px;
+    --dy: 28px;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .projeto-card {
+  .projeto-anim {
     opacity: 1;
-    transform: none;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+
+  .projeto--visivel .projeto-anim,
+  .projeto--visivel .projeto-capa img,
+  .projeto--visivel .projeto-tag,
+  .projeto--visivel::before,
+  .projeto--visivel .projeto-status-check path {
+    animation: none;
+  }
+
+  .projeto-status-check path {
+    stroke-dashoffset: 0;
   }
 
   .projeto-status-dot {
     animation: none;
   }
-}
 
-/* telas largas: continua empilhado (foto, título, texto, botão), só que bem mais largo */
-@media (min-width: 760px) {
-  /* a essa largura, 16:9 ficaria alto demais — achata um pouco a faixa da foto */
-  .projeto-capa {
-    aspect-ratio: 32 / 9;
+  .projeto-janela {
+    transform: none;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
   }
 
-  .projeto-corpo {
-    padding: 24px 32px 28px;
+  .projeto-capa img,
+  .projeto-link-seta,
+  .projeto-tag {
+    transition: none;
   }
 
-  .projeto-corpo h2 {
-    font-size: 1.25rem;
-  }
-
-  .projeto-resumo {
-    max-width: 760px;
-    font-size: 0.92rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .projetos-grade {
-    grid-template-columns: 1fr;
+  .projeto:hover .projeto-capa img,
+  .projeto:hover .projeto-link-seta,
+  .projeto-tag:hover {
+    transform: none;
   }
 }
