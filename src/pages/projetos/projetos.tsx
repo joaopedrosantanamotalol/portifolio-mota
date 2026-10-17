@@ -1,13 +1,26 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import TextoDigitado from '../../components/animação/texto_digitado/texto_digitado'
 import { projetos } from '../../data/projetos'
 import './projetos.css'
 
-// o layout se repete a cada 4 projetos: 1 grande, 1 largo, 2 pequenos
-const VARIANTES = ['grande', 'largo', 'pequeno', 'pequeno'] as const
+// tira "owner/repo" de um link do GitHub, pra montar a imagem de capa automaticamente
+function repoDoLink(link: string): string | null {
+  try {
+    const url = new URL(link)
+    if (url.hostname !== 'github.com') return null
+
+    const [owner, repo] = url.pathname.replace(/^\//, '').split('/')
+    if (!owner || !repo) return null
+
+    return `${owner}/${repo}`
+  } catch {
+    return null
+  }
+}
 
 export default function Projetos() {
   const cartoesRef = useRef<(HTMLElement | null)[]>([])
+  const [semImagem, setSemImagem] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
     const cartoes = cartoesRef.current.filter((el): el is HTMLElement => el !== null)
@@ -37,25 +50,35 @@ export default function Projetos() {
     <div className="projetos">
       <TextoDigitado texto="Meus projetos" />
 
-      <div className="projetos-bento">
+      <div className="projetos-grade">
         {projetos.map((projeto, indice) => {
           const concluido = projeto.status === 'Concluído'
-          const variante = VARIANTES[indice % VARIANTES.length]
+          const repo = repoDoLink(projeto.link)
+          const imagemFalhou = semImagem[projeto.id]
 
           return (
             <article
-              className={`projeto-card projeto-card--${variante}${
-                concluido ? ' projeto-card--concluido' : ''
-              }`}
+              className={`projeto-card${concluido ? ' projeto-card--concluido' : ''}`}
               key={projeto.id}
               ref={(el) => {
                 cartoesRef.current[indice] = el
               }}
               style={{ transitionDelay: `${(indice % 4) * 0.08}s` }}
-              tabIndex={0}
             >
-              <header className="projeto-topo">
-                <h2>{projeto.nome}</h2>
+              <div className="projeto-capa">
+                {repo && !imagemFalhou ? (
+                  <img
+                    src={`https://opengraph.githubassets.com/1/${repo}`}
+                    alt={`Capa do repositório ${projeto.nome}`}
+                    loading="lazy"
+                    onError={() =>
+                      setSemImagem((atual) => ({ ...atual, [projeto.id]: true }))
+                    }
+                  />
+                ) : (
+                  <span className="projeto-capa-fallback">{projeto.nome.charAt(0)}</span>
+                )}
+
                 {projeto.status && (
                   <span
                     className={`projeto-status${
@@ -70,42 +93,33 @@ export default function Projetos() {
                     {projeto.status}
                   </span>
                 )}
-              </header>
-
-              <p className="projeto-resumo">{projeto.resumo}</p>
-
-              <div className="projeto-tags">
-                {projeto.tecnologias.map((tecnologia) => (
-                  <span className="projeto-tag" key={tecnologia}>
-                    {tecnologia}
-                  </span>
-                ))}
               </div>
 
-              {/* no card grande fica sempre visível; nos outros, revela ao passar o mouse */}
-              <div className="projeto-revelar">
-                <ul className="projeto-destaques">
-                  {projeto.destaques.map((destaque) => (
-                    <li key={destaque}>{destaque}</li>
+              <div className="projeto-corpo">
+                <h2>{projeto.nome}</h2>
+
+                <div className="projeto-tags">
+                  {projeto.tecnologias.slice(0, 4).map((tecnologia) => (
+                    <span className="projeto-tag" key={tecnologia}>
+                      {tecnologia}
+                    </span>
                   ))}
-                </ul>
+                </div>
 
-                <a
-                  className="projeto-link"
-                  href={projeto.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span>Ver no GitHub</span>
-                  <span className="projeto-link-seta">→</span>
-                </a>
+                <p className="projeto-resumo">{projeto.resumo}</p>
+
+                <div className="projeto-rodape">
+                  <a
+                    className="projeto-link"
+                    href={projeto.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span>Ver no GitHub</span>
+                    <span className="projeto-link-seta">→</span>
+                  </a>
+                </div>
               </div>
-
-              {variante !== 'grande' && (
-                <span className="projeto-dica" aria-hidden="true">
-                  passe o mouse ou toque →
-                </span>
-              )}
             </article>
           )
         })}

@@ -4,25 +4,20 @@
   padding-bottom: 8vh;
 }
 
-/* grade "bento": tamanhos variados, não é mais uma fileira repetitiva */
-.projetos-bento {
+.projetos-grade {
   margin-top: 5vh;
 
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  grid-auto-rows: 168px;
-  gap: 14px;
+  grid-template-columns: 1fr; /* 1 projeto por linha, usando a largura toda */
+  gap: 20px;
 }
 
 .projeto-card {
   position: relative;
-  overflow: hidden;
+  overflow: hidden; /* mantém a imagem e o brilho do hover sempre dentro do card */
 
   display: flex;
   flex-direction: column;
-  gap: 10px;
-
-  padding: 22px;
 
   background: var(--superficie);
   border: 1px solid var(--borda);
@@ -46,38 +41,20 @@
 }
 
 .projeto-card:hover,
-.projeto-card:focus-within,
-.projeto-card:focus-visible {
-  transform: translateY(-4px);
+.projeto-card:focus-within {
+  transform: translateY(-5px);
 
   border-color: var(--acento);
-  box-shadow: 0 16px 40px -14px var(--acento-brilho);
-  outline: none;
+  box-shadow: 0 18px 44px -16px var(--acento-brilho);
 }
 
-/* tamanhos do bento */
-.projeto-card--grande {
-  grid-column: span 2;
-  grid-row: span 2;
-}
-
-.projeto-card--largo {
-  grid-column: span 2;
-  grid-row: span 1;
-}
-
-.projeto-card--pequeno {
-  grid-column: span 1;
-  grid-row: span 1;
-}
-
-/* brilho diagonal que desliza pelo card no hover, contido dentro dele */
+/* brilho diagonal que desliza pelo card no hover */
 .projeto-card::after {
   content: '';
 
   position: absolute;
   inset: 0;
-  z-index: 1;
+  z-index: 2;
 
   background: linear-gradient(100deg, transparent 42%, var(--acento-brilho) 50%, transparent 58%);
 
@@ -92,36 +69,76 @@
   transform: translateX(130%);
 }
 
-.projeto-topo {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px 12px;
+/* ===== capa (imagem do repositório) ===== */
+
+.projeto-capa {
+  position: relative;
+
+  width: 100%;
+  aspect-ratio: 16 / 9;
+
+  background: linear-gradient(135deg, var(--superficie-2), var(--superficie));
+
+  overflow: hidden;
 }
 
-.projeto-topo h2 {
-  margin: 0;
+.projeto-capa img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  transition: transform 0.5s ease;
+}
+
+.projeto-card:hover .projeto-capa img {
+  transform: scale(1.08);
+}
+
+/* sombra sutil embaixo da imagem, pra ela se misturar com o corpo do card */
+.projeto-capa::before {
+  content: '';
+
+  position: absolute;
+  inset: auto 0 0 0;
+  z-index: 1;
+
+  height: 50%;
+
+  background: linear-gradient(to top, var(--superficie), transparent);
+}
+
+/* quando a imagem do GitHub falha (repo não existe, sem preview, etc.) */
+.projeto-capa-fallback {
+  position: absolute;
+  inset: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   font-family: var(--mono);
-  font-size: 1.05rem;
-  font-weight: 600;
-  line-height: 1.3;
-  color: var(--texto);
-  overflow-wrap: anywhere;
-}
-
-.projeto-card--grande .projeto-topo h2 {
-  font-size: 1.3rem;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--acento-claro);
+  opacity: 0.5;
 }
 
 .projeto-status {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+
   display: inline-flex;
   align-items: center;
   gap: 5px;
 
-  padding: 3px 10px;
+  padding: 4px 11px;
 
-  background: var(--acento-fundo);
+  background: rgba(10, 10, 15, 0.75);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--acento-fundo);
   border-radius: 999px;
 
   color: var(--acento-claro);
@@ -158,29 +175,29 @@
   }
 }
 
-.projeto-resumo {
+/* ===== corpo do card ===== */
+
+.projeto-corpo {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+
+  padding: 18px 20px 20px;
+}
+
+.projeto-corpo h2 {
   margin: 0;
 
-  color: var(--texto-suave);
-  font-size: 0.88rem;
-  line-height: 1.55;
-
-  /* nos cards menores, trunca em 2 linhas pra não estourar o quadrado */
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.projeto-card--grande .projeto-resumo {
-  -webkit-line-clamp: 4;
-  line-clamp: 4;
-}
-
-.projeto-card--pequeno .projeto-resumo {
-  -webkit-line-clamp: 1;
-  line-clamp: 1;
+  font-family: var(--mono);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--texto);
+  overflow-wrap: anywhere;
 }
 
 .projeto-tags {
@@ -206,99 +223,34 @@
   color: var(--acento-claro);
 }
 
-/* ===== painel que revela destaques + link ===== */
-
-.projeto-card--grande .projeto-revelar {
-  display: flex;
+.projeto-resumo {
   flex: 1;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 14px;
-}
-
-.projeto-card--largo .projeto-revelar,
-.projeto-card--pequeno .projeto-revelar {
-  position: absolute;
-  inset: auto 0 0 0;
-  z-index: 2;
-
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-
-  padding: 16px;
-
-  background: linear-gradient(
-    to top,
-    var(--superficie) 55%,
-    rgba(10, 10, 15, 0.92) 85%,
-    transparent
-  );
-
-  transform: translateY(100%);
-  opacity: 0;
-
-  transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-.projeto-card--largo:hover .projeto-revelar,
-.projeto-card--largo:focus-within .projeto-revelar,
-.projeto-card--pequeno:hover .projeto-revelar,
-.projeto-card--pequeno:focus-within .projeto-revelar {
-  transform: translateY(0);
-  opacity: 1;
-}
-
-.projeto-destaques {
   margin: 0;
-  padding: 0;
-  list-style: none;
 
+  color: var(--texto-suave);
+  font-size: 0.88rem;
+  line-height: 1.55;
+}
+
+/* botão sempre no canto inferior direito do card */
+.projeto-rodape {
   display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-.projeto-card--pequeno .projeto-destaques li:nth-child(n + 3) {
-  display: none;
-}
-
-.projeto-destaques li {
-  position: relative;
-  padding-left: 14px;
-
-  font-size: 0.8rem;
-  line-height: 1.4;
-  overflow-wrap: anywhere;
-}
-
-.projeto-destaques li::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0.45em;
-
-  width: 5px;
-  height: 5px;
-
-  background: var(--acento);
-  border-radius: 2px;
+  justify-content: flex-end;
+  margin-top: 6px;
 }
 
 .projeto-link {
-  align-self: flex-start;
-
   display: inline-flex;
   align-items: center;
   gap: 6px;
 
-  padding: 7px 12px;
+  padding: 8px 14px;
 
   background-color: var(--acento-forte);
   border-radius: 8px;
 
   color: #fff;
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   font-weight: 600;
   text-decoration: none;
   white-space: nowrap;
@@ -308,6 +260,7 @@
 
 .projeto-link:hover {
   background-color: var(--acento);
+  transform: translateX(2px);
 }
 
 .projeto-link-seta {
@@ -319,56 +272,21 @@
   transform: translateX(4px);
 }
 
-/* dica discreta pros cards que escondem conteúdo */
-.projeto-dica {
-  position: absolute;
-  right: 16px;
-  bottom: 14px;
-  z-index: 1;
-
-  color: var(--texto-suave);
-  font-size: 0.68rem;
-  font-style: italic;
-
-  opacity: 0.7;
-  transition: opacity 0.2s ease;
-}
-
-.projeto-card:hover .projeto-dica,
-.projeto-card:focus-within .projeto-dica {
-  opacity: 0;
-}
-
 /* ===== projeto concluído ===== */
 
 .projeto-card--concluido {
   border-color: rgba(74, 222, 128, 0.25);
 }
 
-.projeto-card--concluido::before {
-  content: '';
-
-  position: absolute;
-  top: 0;
-  left: 16px;
-  right: 16px;
-  z-index: 2;
-
-  height: 2px;
-
-  background: linear-gradient(90deg, transparent, #4ade80, transparent);
-  border-radius: 2px;
-}
-
 .projeto-card--concluido:hover,
 .projeto-card--concluido:focus-within {
   border-color: #4ade80;
-  box-shadow: 0 16px 40px -14px rgba(74, 222, 128, 0.35);
+  box-shadow: 0 18px 44px -16px rgba(74, 222, 128, 0.35);
 }
 
 .projeto-status--concluido {
-  background: rgba(74, 222, 128, 0.12);
   color: #4ade80;
+  border-color: rgba(74, 222, 128, 0.3);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -378,60 +296,34 @@
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
   }
 
-  .projeto-card::after,
   .projeto-status-dot {
     animation: none;
   }
 }
 
-/* tablet: bento vira 2 colunas, mantendo variação de tamanho */
-@media (max-width: 900px) {
-  .projetos-bento {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+/* telas largas: continua empilhado (foto, título, texto, botão), só que bem mais largo */
+@media (min-width: 760px) {
+  /* a essa largura, 16:9 ficaria alto demais — achata um pouco a faixa da foto */
+  .projeto-capa {
+    aspect-ratio: 32 / 9;
   }
 
-  .projeto-card--grande,
-  .projeto-card--largo {
-    grid-column: span 2;
+  .projeto-corpo {
+    padding: 24px 32px 28px;
   }
 
-  .projeto-card--pequeno {
-    grid-column: span 1;
-  }
-}
-
-/* celular: tudo em 1 coluna, conteúdo sempre visível (sem depender de hover) */
-@media (max-width: 620px) {
-  .projetos-bento {
-    grid-template-columns: 1fr;
-    grid-auto-rows: auto;
-  }
-
-  .projeto-card {
-    grid-column: span 1 !important;
-    grid-row: span 1 !important;
+  .projeto-corpo h2 {
+    font-size: 1.25rem;
   }
 
   .projeto-resumo {
-    -webkit-line-clamp: unset;
-    line-clamp: unset;
+    max-width: 760px;
+    font-size: 0.92rem;
   }
+}
 
-  .projeto-card--largo .projeto-revelar,
-  .projeto-card--pequeno .projeto-revelar {
-    position: static;
-    transform: none;
-    opacity: 1;
-
-    padding: 0;
-    background: none;
-  }
-
-  .projeto-card--pequeno .projeto-destaques li:nth-child(n + 3) {
-    display: list-item;
-  }
-
-  .projeto-dica {
-    display: none;
+@media (max-width: 480px) {
+  .projetos-grade {
+    grid-template-columns: 1fr;
   }
 }
