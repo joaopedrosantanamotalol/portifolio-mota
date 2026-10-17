@@ -3,13 +3,13 @@ import TextoDigitado from '../../components/animação/texto_digitado/texto_digi
 import { projetos } from '../../data/projetos'
 import './projetos.css'
 
-// tira "owner/repo" de um link do GitHub, pra montar a imagem de capa automaticamente
+// Extrai "owner/repo" de um link do GitHub
 function repoDoLink(link: string): string | null {
   try {
     const url = new URL(link)
     if (url.hostname !== 'github.com') return null
 
-    const [owner, repo] = url.pathname.replace(/^\//, '').split('/')
+    const [owner, repo] = url.pathname.replace(/^\/+/, '').split('/')
     if (!owner || !repo) return null
 
     return `${owner}/${repo}`
@@ -23,7 +23,9 @@ export default function Projetos() {
   const [semImagem, setSemImagem] = useState<Record<string, boolean>>({})
 
   useEffect(() => {
-    const cartoes = cartoesRef.current.filter((el): el is HTMLElement => el !== null)
+    const cartoes = cartoesRef.current.filter(
+      (el): el is HTMLElement => el !== null,
+    )
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       cartoes.forEach((el) => el.classList.add('projeto-card--visivel'))
@@ -55,6 +57,7 @@ export default function Projetos() {
           const concluido = projeto.status === 'Concluído'
           const repo = repoDoLink(projeto.link)
           const imagemFalhou = semImagem[projeto.id]
+          const isMerlin = projeto.id === 'python-assistive-software'
 
           return (
             <article
@@ -66,23 +69,36 @@ export default function Projetos() {
               style={{ transitionDelay: `${(indice % 4) * 0.08}s` }}
             >
               <div className="projeto-capa">
-                {repo && !imagemFalhou ? (
+                {isMerlin ? (
+                  <img
+                    src="/merlin.png"
+                    alt="Capa do projeto Merlin"
+                    loading="lazy"
+                  />
+                ) : repo && !imagemFalhou ? (
                   <img
                     src={`https://opengraph.githubassets.com/1/${repo}`}
                     alt={`Capa do repositório ${projeto.nome}`}
                     loading="lazy"
                     onError={() =>
-                      setSemImagem((atual) => ({ ...atual, [projeto.id]: true }))
+                      setSemImagem((atual) => ({
+                        ...atual,
+                        [projeto.id]: true,
+                      }))
                     }
                   />
                 ) : (
-                  <span className="projeto-capa-fallback">{projeto.nome.charAt(0)}</span>
+                  <span className="projeto-capa-fallback">
+                    {projeto.nome.charAt(0)}
+                  </span>
                 )}
 
                 {projeto.status && (
                   <span
                     className={`projeto-status${
-                      concluido ? ' projeto-status--concluido' : ' projeto-status--andamento'
+                      concluido
+                        ? ' projeto-status--concluido'
+                        : ' projeto-status--andamento'
                     }`}
                   >
                     {concluido ? (
